@@ -4,15 +4,41 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from . import crud, models, schemas
 from .database import SessionLocal, engine
+from os import environ
 
+ADMIN_API_KEY = environ['ADMIN_API_KEY'] if 'ADMIN_API_KEY' in environ else "AAAA-BBBB-CCCC-DDDD-0000-1111-2222-3333"
 models.Base.metadata.create_all(bind=engine)
+
+# Database definition to be used in path functions
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 app = FastAPI()
 
-# Enable API Keys
-api_keys = [
-    "Super Secret API Key"
-]
+
+
+
+# Get API Keys
+def get_api_keys(api_keys = [ADMIN_API_KEY]):
+    db = SessionLocal()
+    try:
+        keys = db.query(models.Key).all()
+        for item in keys:
+            api_keys.append(item.key)
+    finally:
+        db.close()
+    return api_keys
+
+
+
+
+api_keys = get_api_keys()
+
+
 
 # API Key Header Definition
 api_key_header = APIKeyHeader(name="X-API-Key")
@@ -22,20 +48,14 @@ def get_api_key(api_key_header: str = Security(api_key_header)) -> str:
     if api_key_header in api_keys:
         return api_key_header
     raise HTTPException(
-            status_code = status.HTTP_401_UNAUTHORIZED,
+            status_code = 401,
             detail = "Invalid or missing API Key"
     )
 
 
 
 
-# Database definition to be used in path functions
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+
 
 @app.post(
         "/users/create",

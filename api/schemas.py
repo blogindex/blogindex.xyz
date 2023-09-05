@@ -37,3 +37,6 @@ class KeyDisplay(KeyBase):
 class Key(KeyBase):
     user_id: conint(ge=1)
     permissions: conlist(str) = []
+
+class KeyList(BaseModel):
+    key:str
