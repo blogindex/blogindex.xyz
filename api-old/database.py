@@ -7,10 +7,7 @@ from sqlalchemy.orm import sessionmaker
 # SQLALCHEMY_DATABASE_URL = "sqlite:///./api.db"
 
 # MariaDB
-# SQLALCHEMY_DATABASE_URL = "mariadb+mariadbconnector://blogindex:blogindex@mariadb:3306/blogindex"
-
-# postgresql
-SQLALCHEMY_DATABASE_URL = "postgresql+psycopg2://blogindex:blogindex@db/blogindex"
+SQLALCHEMY_DATABASE_URL = "mariadb+mariadbconnector://blogindex:blogindex@mariadb:3306/blogindex"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL

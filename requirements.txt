@@ -1,9 +1,7 @@
-passlib
-argon2_cffi
-argon2pure
-flask
-flask_sqlalchemy
-uwsgi
+wheel
 uvicorn[standard]
 fastapi
 sqlalchemy
+mariadb
+pydantic[email]
+psycopg2
