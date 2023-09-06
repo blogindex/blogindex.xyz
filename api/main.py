@@ -1,10 +1,14 @@
 from fastapi import Depends, FastAPI, HTTPException, Security
+from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.security import APIKeyHeader
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from . import crud, models, schemas
 from .database import SessionLocal, engine
 from os import environ
+import os
 
 ADMIN_API_KEY = environ['ADMIN_API_KEY'] if 'ADMIN_API_KEY' in environ else "AAAA-BBBB-CCCC-DDDD-0000-1111-2222-3333"
 models.Base.metadata.create_all(bind=engine)
@@ -19,8 +23,8 @@ def get_db():
 
 app = FastAPI()
 
-
-
+app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/logs", StaticFiles(directory="logs"),name="logs")
 
 # Get API Keys
 def get_api_keys(api_keys = [ADMIN_API_KEY]):
@@ -54,14 +58,23 @@ def get_api_key(api_key_header: str = Security(api_key_header)) -> str:
 
 
 
+@app.get('/favicon.ico', response_class=FileResponse)
+async def favicon():
+    favicon = "favicon.ico"
+    favicon_path = os.path.join(app.root_path, "static", favicon)
+    return FileResponse(path=favicon_path, headers={"Content-Disposition": "attachment; filename=" + favicon})
 
-
+@app.get('/logs', response_class=HTMLResponse)
+async def logs():
+    with open(os.path.join(app.root_path, "logs", "blogindex.dev")) as log_file:
+        log_contents = log_file.read().replace('\n','<br>')
+        return f"<div style='position: -webkit-sticky; position: sticky; top:0; padding:1em;'><button onCLick='location.reload()'>Refresh Logs</button></div><div style='padding-top:1em;font-family:courier;'>{log_contents}</div>"
 
 @app.post(
         "/users/create",
         response_model=schemas.User,
         )
-def create_user(
+async def create_user(
         user: schemas.UserCreate,
         db: Session = Depends(get_db),
         api_key: str = Security(get_api_key)
@@ -77,7 +90,7 @@ def create_user(
     return crud.create_user(db=db, user=user)
 
 @app.get("/users/get", response_model=list[schemas.User])
-def get_all_users(
+async def get_all_users(
         skip: int = 0,
         limit: int = 100,
         db: Session = Depends(get_db),
@@ -87,7 +100,7 @@ def get_all_users(
     return users
 
 @app.get("/users/get/by-email/{email}", response_model = list[schemas.User])
-def get_users_by_email(
+async def get_users_by_email(
         email: str,
         db: Session = Depends(get_db),
         api_key: str = Security(get_api_key)
@@ -96,7 +109,7 @@ def get_users_by_email(
     return users
 
 @app.get("/users/get/by-id/{user_id}", response_model = list[schemas.User])
-def get_users_by_id(
+async def get_users_by_id(
         user_id: int,
         db: Session = Depends(get_db),
         api_key: str = Security(get_api_key)
@@ -106,7 +119,7 @@ def get_users_by_id(
 
 
 @app.post("/key/create", response_model = list[schemas.KeyDisplay])
-def create_key(
+async def create_key(
         key: schemas.KeyCreate,
         db: Session = Depends(get_db),
         api_key: str = Security(get_api_key)
@@ -115,7 +128,7 @@ def create_key(
     return key
 
 @app.get("/key/get/by-user_id/{user_id}", response_model = list[schemas.Key])
-def get_user_keys(
+async def get_user_keys(
         user_id: int,
         db: Session = Depends(get_db),
         api_key: str = Security(get_api_key)

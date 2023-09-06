@@ -1,0 +1,655 @@
+[2023-09-05 18:48:00,503.503] INFO [140467832631296] - Started server process [76190]
+[2023-09-05 18:48:00,503.503] INFO [140467832631296] - Waiting for application startup.
+[2023-09-05 18:48:00,503.503] INFO [140467832631296] - Application startup complete.
+[2023-09-05 18:48:00,505.505] INFO [140467832631296] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 18:48:17,712.712] INFO [140467832631296] - 172.18.0.5:38928 - "GET /logs HTTP/1.1" 307
+[2023-09-05 18:48:17,760.760] INFO [140467832631296] - 172.18.0.5:38928 - "GET / HTTP/1.1" 404
+[2023-09-05 18:48:33,624.624] INFO [140467832631296] - 172.18.0.5:53476 - "GET /log HTTP/1.1" 500
+[2023-09-05 18:48:33,624.624] ERROR [140467832631296] - Exception in ASGI application
+Traceback (most recent call last):
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/applications.py", line 292, in __call__
+    await super().__call__(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 66, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/routing.py", line 273, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/routing.py", line 190, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/api/main.py", line 69, in logs
+    log_path = os.path.join(app.root_path, "logs", log_file)
+               ^^
+NameError: name 'os' is not defined
+[2023-09-05 18:50:06,903.903] INFO [140467832631296] - Shutting down
+[2023-09-05 18:50:07,004.004] INFO [140467832631296] - Waiting for application shutdown.
+[2023-09-05 18:50:07,004.004] INFO [140467832631296] - Application shutdown complete.
+[2023-09-05 18:50:07,004.004] INFO [140467832631296] - Finished server process [76190]
+[2023-09-05 18:50:08,812.812] INFO [140374335692800] - Started server process [76697]
+[2023-09-05 18:50:08,812.812] INFO [140374335692800] - Waiting for application startup.
+[2023-09-05 18:50:08,812.812] INFO [140374335692800] - Application startup complete.
+[2023-09-05 18:50:08,814.814] INFO [140374335692800] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 18:50:11,051.051] INFO [140374335692800] - 172.18.0.5:43322 - "GET /log HTTP/1.1" 500
+[2023-09-05 18:50:11,051.051] ERROR [140374335692800] - Exception in ASGI application
+Traceback (most recent call last):
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/responses.py", line 335, in __call__
+    stat_result = await anyio.to_thread.run_sync(os.stat, self.path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/anyio/to_thread.py", line 33, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 877, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 807, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'logs/beardedtek.dev'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/applications.py", line 292, in __call__
+    await super().__call__(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 69, in app
+    await response(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/responses.py", line 338, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path logs/beardedtek.dev does not exist.
+[2023-09-05 18:50:42,494.494] INFO [140374335692800] - Shutting down
+[2023-09-05 18:50:42,594.594] INFO [140374335692800] - Waiting for application shutdown.
+[2023-09-05 18:50:42,595.595] INFO [140374335692800] - Application shutdown complete.
+[2023-09-05 18:50:42,595.595] INFO [140374335692800] - Finished server process [76697]
+[2023-09-05 18:50:44,570.570] INFO [139727648817152] - Started server process [76850]
+[2023-09-05 18:50:44,570.570] INFO [139727648817152] - Waiting for application startup.
+[2023-09-05 18:50:44,570.570] INFO [139727648817152] - Application startup complete.
+[2023-09-05 18:50:44,572.572] INFO [139727648817152] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 18:50:47,044.044] INFO [139727648817152] - 172.18.0.5:52080 - "GET /log HTTP/1.1" 500
+[2023-09-05 18:50:47,045.045] ERROR [139727648817152] - Exception in ASGI application
+Traceback (most recent call last):
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/responses.py", line 335, in __call__
+    stat_result = await anyio.to_thread.run_sync(os.stat, self.path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/anyio/to_thread.py", line 33, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 877, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 807, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'logs/beardedtek.dev'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/applications.py", line 292, in __call__
+    await super().__call__(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 69, in app
+    await response(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/responses.py", line 338, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path logs/beardedtek.dev does not exist.
+[2023-09-05 18:51:30,385.385] INFO [139727648817152] - 172.18.0.5:45622 - "GET /favicon.ico HTTP/1.1" 500
+[2023-09-05 18:51:30,385.385] ERROR [139727648817152] - Exception in ASGI application
+Traceback (most recent call last):
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/responses.py", line 335, in __call__
+    stat_result = await anyio.to_thread.run_sync(os.stat, self.path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/anyio/to_thread.py", line 33, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 877, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 807, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'static/favicon.ico'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/applications.py", line 292, in __call__
+    await super().__call__(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 69, in app
+    await response(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/responses.py", line 338, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path static/favicon.ico does not exist.
+[2023-09-05 18:52:55,034.034] INFO [139727648817152] - 172.18.0.5:50260 - "GET /docs HTTP/1.1" 200
+[2023-09-05 18:52:55,180.180] INFO [139727648817152] - 172.18.0.5:50260 - "GET /openapi.json HTTP/1.1" 200
+[2023-09-05 19:19:47,404.404] INFO [139727648817152] - 172.18.0.5:44144 - "GET /favicon.ico HTTP/1.1" 500
+[2023-09-05 19:19:47,404.404] ERROR [139727648817152] - Exception in ASGI application
+Traceback (most recent call last):
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/responses.py", line 335, in __call__
+    stat_result = await anyio.to_thread.run_sync(os.stat, self.path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/anyio/to_thread.py", line 33, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 877, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 807, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'static/favicon.ico'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/applications.py", line 292, in __call__
+    await super().__call__(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 69, in app
+    await response(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/responses.py", line 338, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path static/favicon.ico does not exist.
+[2023-09-05 20:09:00,158.158] INFO [139727648817152] - 172.18.0.5:47250 - "GET / HTTP/1.1" 404
+[2023-09-05 21:24:55,870.870] INFO [139727648817152] - 172.18.0.5:59276 - "GET /favicon.ico HTTP/1.1" 500
+[2023-09-05 21:24:55,870.870] ERROR [139727648817152] - Exception in ASGI application
+Traceback (most recent call last):
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/responses.py", line 335, in __call__
+    stat_result = await anyio.to_thread.run_sync(os.stat, self.path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/anyio/to_thread.py", line 33, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 877, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 807, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'static/favicon.ico'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/applications.py", line 292, in __call__
+    await super().__call__(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 69, in app
+    await response(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/responses.py", line 338, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path static/favicon.ico does not exist.
+[2023-09-05 21:25:08,225.225] INFO [139727648817152] - 172.18.0.5:34434 - "GET /log HTTP/1.1" 500
+[2023-09-05 21:25:08,225.225] ERROR [139727648817152] - Exception in ASGI application
+Traceback (most recent call last):
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/responses.py", line 335, in __call__
+    stat_result = await anyio.to_thread.run_sync(os.stat, self.path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/anyio/to_thread.py", line 33, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 877, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 807, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'logs/beardedtek.dev'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/applications.py", line 292, in __call__
+    await super().__call__(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 69, in app
+    await response(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/responses.py", line 338, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path logs/beardedtek.dev does not exist.
+[2023-09-05 21:27:24,818.818] INFO [139727648817152] - 172.18.0.5:43006 - "GET /favicon.ico HTTP/1.1" 200
+[2023-09-05 21:28:02,504.504] INFO [139727648817152] - 172.18.0.5:46540 - "GET /docs HTTP/1.1" 200
+[2023-09-05 21:28:02,889.889] INFO [139727648817152] - 172.18.0.5:46540 - "GET /openapi.json HTTP/1.1" 200
+[2023-09-05 21:28:16,506.506] INFO [139727648817152] - 172.18.0.5:55174 - "GET /favicon.ico HTTP/1.1" 200
+[2023-09-05 21:28:29,858.858] INFO [139727648817152] - 172.18.0.5:57214 - "GET /docs HTTP/1.1" 200
+[2023-09-05 21:28:30,227.227] INFO [139727648817152] - 172.18.0.5:57214 - "GET /openapi.json HTTP/1.1" 200
+[2023-09-05 21:28:40,610.610] INFO [139727648817152] - 172.18.0.5:47334 - "GET /docs HTTP/1.1" 200
+[2023-09-05 21:28:40,962.962] INFO [139727648817152] - 172.18.0.5:47334 - "GET /openapi.json HTTP/1.1" 200
+[2023-09-05 21:28:44,330.330] INFO [139727648817152] - 172.18.0.5:47334 - "GET /docs HTTP/1.1" 200
+[2023-09-05 21:28:44,719.719] INFO [139727648817152] - 172.18.0.5:47334 - "GET /openapi.json HTTP/1.1" 200
+[2023-09-05 21:28:48,813.813] INFO [139727648817152] - 172.18.0.5:47334 - "GET /docs HTTP/1.1" 200
+[2023-09-05 21:28:49,134.134] INFO [139727648817152] - 172.18.0.5:47334 - "GET /openapi.json HTTP/1.1" 200
+[2023-09-05 21:28:55,567.567] INFO [139727648817152] - 172.18.0.5:56860 - "GET / HTTP/1.1" 404
+[2023-09-05 21:28:55,688.688] INFO [139727648817152] - 172.18.0.5:56860 - "GET /favicon.ico HTTP/1.1" 200
+[2023-09-05 21:29:01,093.093] INFO [139727648817152] - 172.18.0.5:56868 - "GET / HTTP/1.1" 404
+[2023-09-05 21:29:04,152.152] INFO [139727648817152] - 172.18.0.5:56868 - "GET / HTTP/1.1" 404
+[2023-09-05 21:29:04,265.265] INFO [139727648817152] - 172.18.0.5:56868 - "GET /favicon.ico HTTP/1.1" 200
+[2023-09-05 21:30:00,601.601] INFO [139727648817152] - Shutting down
+[2023-09-05 21:30:00,702.702] INFO [139727648817152] - Waiting for application shutdown.
+[2023-09-05 21:30:00,702.702] INFO [139727648817152] - Application shutdown complete.
+[2023-09-05 21:30:00,702.702] INFO [139727648817152] - Finished server process [76850]
+[2023-09-05 21:30:02,498.498] INFO [139719788646400] - Started server process [105318]
+[2023-09-05 21:30:02,498.498] INFO [139719788646400] - Waiting for application startup.
+[2023-09-05 21:30:02,498.498] INFO [139719788646400] - Application startup complete.
+[2023-09-05 21:30:02,499.499] INFO [139719788646400] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 21:30:09,288.288] INFO [139719788646400] - 172.18.0.5:39250 - "GET /log HTTP/1.1" 200
+[2023-09-05 21:30:09,289.289] ERROR [139719788646400] - Exception in ASGI application
+Traceback (most recent call last):
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/applications.py", line 292, in __call__
+    await super().__call__(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 69, in app
+    await response(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/responses.py", line 358, in __call__
+    await send(
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 65, in sender
+    await send(message)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 159, in _send
+    await send(message)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 560, in send
+    raise RuntimeError("Response content longer than Content-Length")
+RuntimeError: Response content longer than Content-Length
+[2023-09-05 21:30:44,698.698] INFO [139719788646400] - Shutting down
+[2023-09-05 21:30:44,798.798] INFO [139719788646400] - Waiting for application shutdown.
+[2023-09-05 21:30:44,798.798] INFO [139719788646400] - Application shutdown complete.
+[2023-09-05 21:30:44,799.799] INFO [139719788646400] - Finished server process [105318]
+[2023-09-05 21:30:46,981.981] INFO [140027450781696] - Started server process [105519]
+[2023-09-05 21:30:46,982.982] INFO [140027450781696] - Waiting for application startup.
+[2023-09-05 21:30:46,982.982] INFO [140027450781696] - Application startup complete.
+[2023-09-05 21:30:46,983.983] INFO [140027450781696] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 21:30:52,057.057] INFO [140027450781696] - 172.18.0.5:59914 - "GET /log HTTP/1.1" 200
+[2023-09-05 21:30:52,058.058] ERROR [140027450781696] - Exception in ASGI application
+Traceback (most recent call last):
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/applications.py", line 292, in __call__
+    await super().__call__(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/routing.py", line 69, in app
+    await response(scope, receive, send)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/responses.py", line 358, in __call__
+    await send(
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 65, in sender
+    await send(message)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 159, in _send
+    await send(message)
+  File "/blogindex.xyz/venv/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 560, in send
+    raise RuntimeError("Response content longer than Content-Length")
+RuntimeError: Response content longer than Content-Length
+[2023-09-05 21:33:48,085.085] INFO [140027450781696] - Shutting down
+[2023-09-05 21:33:48,186.186] INFO [140027450781696] - Waiting for application shutdown.
+[2023-09-05 21:33:48,186.186] INFO [140027450781696] - Application shutdown complete.
+[2023-09-05 21:33:48,186.186] INFO [140027450781696] - Finished server process [105519]
+[2023-09-05 21:36:05,889.889] INFO [140094354878464] - Started server process [106649]
+[2023-09-05 21:36:05,890.890] INFO [140094354878464] - Waiting for application startup.
+[2023-09-05 21:36:05,890.890] INFO [140094354878464] - Application startup complete.
+[2023-09-05 21:36:05,891.891] INFO [140094354878464] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 21:36:13,411.411] INFO [140094354878464] - Shutting down
+[2023-09-05 21:36:13,511.511] INFO [140094354878464] - Waiting for application shutdown.
+[2023-09-05 21:36:13,511.511] INFO [140094354878464] - Application shutdown complete.
+[2023-09-05 21:36:13,512.512] INFO [140094354878464] - Finished server process [106649]
+[2023-09-05 21:36:15,401.401] INFO [140620519395328] - Started server process [106729]
+[2023-09-05 21:36:15,401.401] INFO [140620519395328] - Waiting for application startup.
+[2023-09-05 21:36:15,401.401] INFO [140620519395328] - Application startup complete.
+[2023-09-05 21:36:15,403.403] INFO [140620519395328] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 21:36:20,222.222] INFO [140620519395328] - 172.18.0.5:48742 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:39:03,288.288] INFO [140620519395328] - Shutting down
+[2023-09-05 21:39:03,389.389] INFO [140620519395328] - Waiting for application shutdown.
+[2023-09-05 21:39:03,389.389] INFO [140620519395328] - Application shutdown complete.
+[2023-09-05 21:39:03,390.390] INFO [140620519395328] - Finished server process [106729]
+[2023-09-05 21:39:04,877.877] INFO [139680149762048] - Started server process [107317]
+[2023-09-05 21:39:04,877.877] INFO [139680149762048] - Waiting for application startup.
+[2023-09-05 21:39:04,878.878] INFO [139680149762048] - Application startup complete.
+[2023-09-05 21:39:04,880.880] INFO [139680149762048] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 21:39:08,228.228] INFO [139680149762048] - 172.18.0.5:40428 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:39:08,396.396] INFO [139680149762048] - 172.18.0.5:40428 - "GET /favicon.ico HTTP/1.1" 200
+[2023-09-05 21:40:39,499.499] INFO [139680149762048] - Shutting down
+[2023-09-05 21:40:39,600.600] INFO [139680149762048] - Waiting for application shutdown.
+[2023-09-05 21:40:39,600.600] INFO [139680149762048] - Application shutdown complete.
+[2023-09-05 21:40:39,601.601] INFO [139680149762048] - Finished server process [107317]
+[2023-09-05 21:41:41,559.559] INFO [140714648133632] - Started server process [107966]
+[2023-09-05 21:41:41,559.559] INFO [140714648133632] - Waiting for application startup.
+[2023-09-05 21:41:41,560.560] INFO [140714648133632] - Application startup complete.
+[2023-09-05 21:41:41,562.562] INFO [140714648133632] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 21:41:43,178.178] INFO [140714648133632] - 172.18.0.5:43856 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:41:43,356.356] INFO [140714648133632] - 172.18.0.5:43856 - "GET /favicon.ico HTTP/1.1" 200
+[2023-09-05 21:42:52,152.152] INFO [140714648133632] - 172.18.0.5:40604 - "GET / HTTP/1.1" 404
+[2023-09-05 21:45:10,741.741] INFO [140714648133632] - Shutting down
+[2023-09-05 21:45:10,841.841] INFO [140714648133632] - Waiting for application shutdown.
+[2023-09-05 21:45:10,842.842] INFO [140714648133632] - Application shutdown complete.
+[2023-09-05 21:45:10,842.842] INFO [140714648133632] - Finished server process [107966]
+[2023-09-05 21:45:12,466.466] INFO [140541327110144] - Started server process [108713]
+[2023-09-05 21:45:12,467.467] INFO [140541327110144] - Waiting for application startup.
+[2023-09-05 21:45:12,467.467] INFO [140541327110144] - Application startup complete.
+[2023-09-05 21:45:12,468.468] INFO [140541327110144] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 21:45:14,940.940] INFO [140541327110144] - 172.18.0.5:38902 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:45:15,104.104] INFO [140541327110144] - 172.18.0.5:38902 - "GET /favicon.ico HTTP/1.1" 200
+[2023-09-05 21:45:17,774.774] INFO [140541327110144] - 172.18.0.5:38902 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:45:19,036.036] INFO [140541327110144] - 172.18.0.5:38902 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:45:25,264.264] INFO [140541327110144] - 172.18.0.5:59510 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:47:01,617.617] INFO [140541327110144] - Shutting down
+[2023-09-05 21:47:01,717.717] INFO [140541327110144] - Waiting for application shutdown.
+[2023-09-05 21:47:01,718.718] INFO [140541327110144] - Application shutdown complete.
+[2023-09-05 21:47:01,718.718] INFO [140541327110144] - Finished server process [108713]
+[2023-09-05 21:47:59,584.584] INFO [140141951553536] - Started server process [109396]
+[2023-09-05 21:47:59,585.585] INFO [140141951553536] - Waiting for application startup.
+[2023-09-05 21:47:59,585.585] INFO [140141951553536] - Application startup complete.
+[2023-09-05 21:47:59,587.587] INFO [140141951553536] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 21:48:04,912.912] INFO [140141951553536] - 172.18.0.5:40728 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:48:05,134.134] INFO [140141951553536] - 172.18.0.5:40728 - "GET /favicon.ico HTTP/1.1" 200
+[2023-09-05 21:48:06,140.140] INFO [140141951553536] - 172.18.0.5:40728 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:48:08,862.862] INFO [140141951553536] - 172.18.0.5:40728 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:48:21,187.187] INFO [140141951553536] - 172.18.0.5:51136 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:48:21,355.355] INFO [140141951553536] - 172.18.0.5:51136 - "GET /favicon.ico HTTP/1.1" 200
+[2023-09-05 21:48:24,828.828] INFO [140141951553536] - 172.18.0.5:51136 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:49:03,863.863] INFO [140141951553536] - 172.18.0.5:42796 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:49:07,434.434] INFO [140141951553536] - Shutting down
+[2023-09-05 21:49:07,534.534] INFO [140141951553536] - Waiting for application shutdown.
+[2023-09-05 21:49:07,534.534] INFO [140141951553536] - Application shutdown complete.
+[2023-09-05 21:49:07,534.534] INFO [140141951553536] - Finished server process [109396]
+[2023-09-05 21:49:09,169.169] INFO [140027106549760] - Started server process [109762]
+[2023-09-05 21:49:09,169.169] INFO [140027106549760] - Waiting for application startup.
+[2023-09-05 21:49:09,170.170] INFO [140027106549760] - Application startup complete.
+[2023-09-05 21:49:09,171.171] INFO [140027106549760] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 21:49:10,101.101] INFO [140027106549760] - 172.18.0.5:42806 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:49:41,242.242] INFO [140027106549760] - Shutting down
+[2023-09-05 21:49:41,343.343] INFO [140027106549760] - Waiting for application shutdown.
+[2023-09-05 21:49:41,343.343] INFO [140027106549760] - Application shutdown complete.
+[2023-09-05 21:49:41,343.343] INFO [140027106549760] - Finished server process [109762]
+[2023-09-05 21:49:42,682.682] INFO [140190643466240] - Started server process [109912]
+[2023-09-05 21:49:42,682.682] INFO [140190643466240] - Waiting for application startup.
+[2023-09-05 21:49:42,682.682] INFO [140190643466240] - Application startup complete.
+[2023-09-05 21:49:42,684.684] INFO [140190643466240] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 21:49:43,950.950] INFO [140190643466240] - 172.18.0.5:42490 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:49:57,118.118] INFO [140190643466240] - Shutting down
+[2023-09-05 21:49:57,218.218] INFO [140190643466240] - Waiting for application shutdown.
+[2023-09-05 21:49:57,219.219] INFO [140190643466240] - Application shutdown complete.
+[2023-09-05 21:49:57,219.219] INFO [140190643466240] - Finished server process [109912]
+[2023-09-05 21:49:58,768.768] INFO [139688264642560] - Started server process [110011]
+[2023-09-05 21:49:58,768.768] INFO [139688264642560] - Waiting for application startup.
+[2023-09-05 21:49:58,768.768] INFO [139688264642560] - Application startup complete.
+[2023-09-05 21:49:58,770.770] INFO [139688264642560] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 21:49:59,583.583] INFO [139688264642560] - 172.18.0.5:38942 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:50:01,596.596] INFO [139688264642560] - 172.18.0.5:38942 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:50:01,761.761] INFO [139688264642560] - 172.18.0.5:38942 - "GET /favicon.ico HTTP/1.1" 200
+[2023-09-05 21:50:07,990.990] INFO [139688264642560] - Shutting down
+[2023-09-05 21:50:08,090.090] INFO [139688264642560] - Waiting for application shutdown.
+[2023-09-05 21:50:08,091.091] INFO [139688264642560] - Application shutdown complete.
+[2023-09-05 21:50:08,091.091] INFO [139688264642560] - Finished server process [110011]
+[2023-09-05 21:50:09,875.875] INFO [140621825368064] - Started server process [110089]
+[2023-09-05 21:50:09,875.875] INFO [140621825368064] - Waiting for application startup.
+[2023-09-05 21:50:09,875.875] INFO [140621825368064] - Application startup complete.
+[2023-09-05 21:50:09,877.877] INFO [140621825368064] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 21:50:10,736.736] INFO [140621825368064] - 172.18.0.5:58288 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:50:25,614.614] INFO [140621825368064] - Shutting down
+[2023-09-05 21:50:25,715.715] INFO [140621825368064] - Waiting for application shutdown.
+[2023-09-05 21:50:25,715.715] INFO [140621825368064] - Application shutdown complete.
+[2023-09-05 21:50:25,715.715] INFO [140621825368064] - Finished server process [110089]
+[2023-09-05 21:50:28,350.350] INFO [140386179010560] - Started server process [110206]
+[2023-09-05 21:50:28,350.350] INFO [140386179010560] - Waiting for application startup.
+[2023-09-05 21:50:28,350.350] INFO [140386179010560] - Application startup complete.
+[2023-09-05 21:50:28,352.352] INFO [140386179010560] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 21:50:29,892.892] INFO [140386179010560] - 172.18.0.5:48148 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:50:31,039.039] INFO [140386179010560] - 172.18.0.5:48148 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:50:48,634.634] INFO [140386179010560] - 172.18.0.5:37938 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:51:44,224.224] INFO [140386179010560] - Shutting down
+[2023-09-05 21:51:44,324.324] INFO [140386179010560] - Waiting for application shutdown.
+[2023-09-05 21:51:44,325.325] INFO [140386179010560] - Application shutdown complete.
+[2023-09-05 21:51:44,325.325] INFO [140386179010560] - Finished server process [110206]
+[2023-09-05 21:51:46,625.625] INFO [140708498079744] - Started server process [110554]
+[2023-09-05 21:51:46,625.625] INFO [140708498079744] - Waiting for application startup.
+[2023-09-05 21:51:46,626.626] INFO [140708498079744] - Application startup complete.
+[2023-09-05 21:51:46,628.628] INFO [140708498079744] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 21:51:51,177.177] INFO [140708498079744] - 172.18.0.5:49170 - "GET /docs HTTP/1.1" 200
+[2023-09-05 21:51:51,717.717] INFO [140708498079744] - 172.18.0.5:49170 - "GET /openapi.json HTTP/1.1" 200
+[2023-09-05 21:51:56,357.357] INFO [140708498079744] - 172.18.0.5:49170 - "GET /logs HTTP/1.1" 200
+[2023-09-05 21:52:11,171.171] INFO [140708498079744] - 172.18.0.5:34050 - "GET /users/get?skip=0&limit=100 HTTP/1.1" 403
+[2023-09-05 21:52:50,223.223] INFO [140708498079744] - 172.18.0.5:33936 - "GET /users/get?skip=0&limit=100 HTTP/1.1" 200
+[2023-09-05 21:53:21,405.405] INFO [140708498079744] - 172.18.0.5:45966 - "POST /key/create HTTP/1.1" 200
+[2023-09-05 21:55:34,453.453] INFO [140708498079744] - Shutting down
+[2023-09-05 21:55:34,554.554] INFO [140708498079744] - Waiting for application shutdown.
+[2023-09-05 21:55:34,554.554] INFO [140708498079744] - Application shutdown complete.
+[2023-09-05 21:55:34,554.554] INFO [140708498079744] - Finished server process [110554]
+[2023-09-05 21:55:36,220.220] INFO [140479489429504] - Started server process [111400]
+[2023-09-05 21:55:36,220.220] INFO [140479489429504] - Waiting for application startup.
+[2023-09-05 21:55:36,221.221] INFO [140479489429504] - Application startup complete.
+[2023-09-05 21:55:36,222.222] INFO [140479489429504] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 21:55:40,158.158] INFO [140479489429504] - 172.18.0.5:51382 - "POST /key/create HTTP/1.1" 200
+[2023-09-05 21:57:48,522.522] INFO [140479489429504] - Shutting down
+[2023-09-05 21:57:48,623.623] INFO [140479489429504] - Waiting for application shutdown.
+[2023-09-05 21:57:48,623.623] INFO [140479489429504] - Application shutdown complete.
+[2023-09-05 21:57:48,623.623] INFO [140479489429504] - Finished server process [111400]
+[2023-09-05 22:03:09,064.064] INFO [140336330407936] - Started server process [112938]
+[2023-09-05 22:03:09,065.065] INFO [140336330407936] - Waiting for application startup.
+[2023-09-05 22:03:09,065.065] INFO [140336330407936] - Application startup complete.
+[2023-09-05 22:03:09,067.067] INFO [140336330407936] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 22:03:17,442.442] INFO [140336330407936] - 172.18.0.5:49266 - "POST /key/create HTTP/1.1" 200
+[2023-09-05 22:04:59,290.290] INFO [140336330407936] - 172.18.0.5:53982 - "POST /key/create HTTP/1.1" 200
+[2023-09-05 22:05:04,012.012] INFO [140336330407936] - 172.18.0.5:53982 - "POST /key/create HTTP/1.1" 200
+[2023-09-05 22:05:07,337.337] INFO [140336330407936] - Shutting down
+[2023-09-05 22:05:07,437.437] INFO [140336330407936] - Waiting for application shutdown.
+[2023-09-05 22:05:07,438.438] INFO [140336330407936] - Application shutdown complete.
+[2023-09-05 22:05:07,438.438] INFO [140336330407936] - Finished server process [112938]
+[2023-09-05 22:05:09,152.152] INFO [140520507715584] - Started server process [113400]
+[2023-09-05 22:05:09,152.152] INFO [140520507715584] - Waiting for application startup.
+[2023-09-05 22:05:09,153.153] INFO [140520507715584] - Application startup complete.
+[2023-09-05 22:05:09,154.154] INFO [140520507715584] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 22:05:10,544.544] INFO [140520507715584] - 172.18.0.5:34456 - "POST /key/create HTTP/1.1" 200
+[2023-09-05 22:15:41,599.599] INFO [140520507715584] - Shutting down
+[2023-09-05 22:15:41,700.700] INFO [140520507715584] - Waiting for application shutdown.
+[2023-09-05 22:15:41,700.700] INFO [140520507715584] - Application shutdown complete.
+[2023-09-05 22:15:41,700.700] INFO [140520507715584] - Finished server process [113400]
+[2023-09-05 22:15:45,038.038] INFO [140446518534144] - Started server process [116733]
+[2023-09-05 22:15:45,039.039] INFO [140446518534144] - Waiting for application startup.
+[2023-09-05 22:15:45,039.039] INFO [140446518534144] - Application startup complete.
+[2023-09-05 22:15:45,040.040] INFO [140446518534144] - Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[2023-09-05 22:15:48,861.861] INFO [140446518534144] - 172.18.0.5:38334 - "GET /docs HTTP/1.1" 200
+[2023-09-05 22:15:49,132.132] INFO [140446518534144] - 172.18.0.5:38334 - "GET /openapi.json HTTP/1.1" 200

@@ -9,7 +9,6 @@ def get_user_by_id(
             user_id: int,
             db: Session
             ):
-    print("-----------------------\n get_user_by_id\n-----------------------")
     try:
         user = db.query(models.User).filter(models.User.id == user_id).first()
         if user:
@@ -39,6 +38,15 @@ def create_user(
             db: Session,
             user: schemas.UserCreate
             ):
+    """ Creates and inserts a new user into the database
+
+    Args:
+        db (Session): Database Connector
+        user (schemas.UserCreate): Pydantic Model
+
+    Returns:
+        schemas.User: Pydantic Model
+    """
     fake_hashed_password = user.hashed_password + "notreallyhashed"
     db_user = models.User(email=user.email, display=user.display, hashed_password=fake_hashed_password)
     db.add(db_user)
@@ -50,14 +58,36 @@ def create_key(
             key: schemas.KeyDisplay,
             db: Session
             ):
+    """ Generates and inserts a new API Key into the database
+
+    Args:
+        key (schemas.KeyDisplay): Pydantic Schema
+        db (Session): Database Connector
+
+    Returns:
+        schemas.KeyDisplay: Pydantic Model which redacts sensitive information
+    """
     def generate_key():
+        """Generates an API Key in the following format:
+        32 alphanumeric  characters grouped in 4 characters separated by dashes.
+        For example:
+            `KKVy-0B6G-JzBz-NweS-p6sU-GhaX-hHYk-zIcM`
+
+        Returns:
+            str: API Key as shown above
+        """
         return ''.join(random.choices(string.ascii_letters + string.digits, k=32))
+
     user = db.query(models.User).filter(models.User.id == key.user_id).first()
     if user:
+        key_in = generate_key()
+        key_out = ""
+        for i in range(0, len(key_in), 4):
+            key_out += key_in[i:i+4] + "-"
         db_key = models.Key(
             user_id = key.user_id,
-            key = generate_key(),
-            permissions = []
+            key = key_out.rstrip("-"),
+            permissions = key.permissions
         )
         db.add(db_key)
         db.commit()
