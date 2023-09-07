@@ -6,3 +6,7 @@ mariadb
 pydantic[email]
 psycopg2
 pyyaml
+requests
+requests_toolbelt
+pytest
+httpx

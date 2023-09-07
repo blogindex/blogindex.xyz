@@ -6,12 +6,13 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError, ProgrammingError
 import random, string
 
+from .helpers.records import user_exists, site_exists
 from . import models, schemas
 
 def get_user_by_id(
-            user_id: int,
-            db: Session
-            ):
+        user_id: int,
+        db: Session
+    ):
     """ GET row of a single user defined by the `id`
 
     Args:
@@ -22,71 +23,65 @@ def get_user_by_id(
         _type_: _description_
     """
     logging.debug(f"Function call:\n\
-                get_user_by_id(\n\
-                    user_id: int = {user_id}\n\
-                    db: Session = {db},\n\
-                )"
-                )
-    if user_exists_by_id(user_id,db):
+        get_user_by_id(\n\
+            user_id: int = {user_id}\n\
+            db: Session = {db},\n\
+        )"
+    )
+    if user_exists(db,id=user_id):
         user = db.query(models.User).filter(models.User.id == user_id).first()
-        return user
+        return [user]
     else:
         raise HTTPException(
-                status_code=400,
-                detail=f"No users with `id` == `{id}` exist."
-                )
+            status_code=400,
+            detail=f"No users with `user_id` == `{user_id}` exist."
+        )
 
 def get_user_by_email(
-            email: str,
-            db: Session
-            ):
+        email: str,
+        db: Session
+    ):
     logging.debug(f"Function call:\n\
-                get_user_keys(\n\
-                    email: str = {email}\n\
-                    db: Session = {db},\n\
-                )"
-                )
-    if user_exists_by_email(email,db):
+        get_user_keys(\n\
+            email: str = {email}\n\
+            db: Session = {db},\n\
+        )"
+    )
+    if user_exists(db,email):
         user = db.query(models.User).filter(models.User.email == email).first()
-        return user
+        return [user]
     else:
         raise HTTPException(
-                status_code=400,
-                detail=f"No users with `email` == {email} exist."
-                )
+            status_code=400,
+            detail=f"No users with `email` == {email} exist."
+        )
 
 def get_all_users(
-            db: Session,
-            skip: int = 0,
-            limit: int = 100
-            ):
+        db: Session,
+        skip: int = 0,
+        limit: int = 100
+    ):
     logging.debug(f"Function call:\n\
-                get_user_keys(\n\
-                    db: Session = {db},\n\
-                    skip: int = {skip}\n\
-                    limit: int = {limit}\n\
-                )"
-                )
+        get_user_keys(\n\
+            db: Session = {db},\n\
+            skip: int = {skip}\n\
+            limit: int = {limit}\n\
+        )"
+    )
     query = db.query(models.User).offset(skip).limit(limit) 
     if db.query(query.exists()).first():
         return query.all()
     else:
         raise HTTPException(
-                status_code=400,
-                detail=f"No users exist.  That seems strange.¯\_(ツ)_/¯"
-                )
+            status_code=400,
+            detail=f"No users exist.  That seems strange.¯\\_(ツ)_/¯"
+        )
 
 
 def create_user(
-            db: Session,
-            user: schemas.UserCreate
-            ):
-    logging.debug(f"Function call:\n\
-                get_user_keys(\n\
-                    db: Session = {db},\n\
-                    user: schemas.UserCreate = {user}\n\
-                )"
-                )
+        db: Session,
+        user: schemas.UserCreate
+    ):
     """ Creates and inserts a new user into the database
 
     Args:
@@ -96,6 +91,13 @@ def create_user(
     Returns:
         schemas.User: Pydantic Model
     """
+    logging.debug(f"Function call:\n\
+        get_user_keys(\n\
+            db: Session = {db},\n\
+            user: schemas.UserCreate = {user}\n\
+        )"
+    )
+    
     fake_hashed_password = user.hashed_password + "notreallyhashed"
     db_user = models.User(email=user.email, display=user.display, hashed_password=fake_hashed_password)
     db.add(db_user)
@@ -104,15 +106,15 @@ def create_user(
     return db_user
 
 def create_key(
-            key: schemas.KeyDisplay,
-            db: Session
-            ):
+        key: schemas.KeyDisplay,
+        db: Session
+    ):
     logging.debug(f"Function call:\n\
-                get_user_keys(\n\
-                    key: schemas.KeyDisplay = {key}\n\
-                    db: Session = {db},\n\
-                )"
-                )
+        get_user_keys(\n\
+            key: schemas.KeyDisplay = {key}\n\
+            db: Session = {db},\n\
+        )"
+    )
     """ Generates and inserts a new API Key into the database
 
     Args:
@@ -133,7 +135,7 @@ def create_key(
         """
         return ''.join(random.choices(string.ascii_letters + string.digits, k=32))
 
-    if user_exists_by_id(key.user_id,db):
+    if user_exists(db,id=key.user_id):
         key_in = generate_key()
         key_out = ""
         for i in range(0, len(key_in), 4):
@@ -148,55 +150,68 @@ def create_key(
         db.refresh(db_key)
         return [db_key]
     raise HTTPException(
-            status_code=400,
-            detail = f"User with user_Id {key.user_id} does not exist."
-            )
+        status_code=400,
+        detail = f"User with user_Id {key.user_id} does not exist."
+    )
 
 def get_user_keys(
-            user_id: int,
-            db: Session
-            ):
-    logging.debug(f"Function call:\n\
-                get_user_keys(\n\
-                    user_id: int = {user_id}\n\
-                    db: Session = {db},\n\
-                )"
-                )
-            
+        user_id: int,
+        db: Session
+    ):
     """Retrieves keys for a specific user
-
     Args:
         user_id (int): unique user id
         db (Session): Database Connector
-
     Raises:
         HTTPException: If user does not exist, raises HTTP 400
-
     Returns:
         schema.Key: Returns a list of user keys to authenticate with.
                     This should *NOT* be made available with an endpoint in production
                     Use WISELY!!!!!
     """
+    logging.debug(f"Function call:\n\
+        get_user_keys(\n\
+            user_id: int = {user_id}\n\
+            db: Session = {db},\n\
+        )"
+    )
+            
+ 
     user_keys = db.query(models.Key).filter(models.Key.user_id == user_id).all()
     if user_keys:
         return [user_keys]
     raise HTTPException(
-            status_code=400,
-            detail = f"User with user_id {user_id} has no keys."
-            )
+        status_code=400,
+        detail = f"User with user_id {user_id} has no keys."
+    )
 
 def create_site(
-            db:Session,
-            site: schemas.SiteCreate
-            ):
+        db:Session,
+        site: schemas.SiteCreate
+    ):
+    """Creates a new site in the database
+
+    Args:
+        db (Session): Database Session
+        site (schemas.SiteCreate): Pydantic schema to validate model
+
+    Raises:
+        HTTPException: 400 URL Exists:
+                            No Duplicate URL's Allowed
+        HTTPException: 400 User Does Not Exist:
+                            Site needs to be attached to a user
+
+    Returns:
+        _type_: _description_
+    """
     logging.debug(f"Function call:\n\
-                create_site(\n\
-                    db = {db},\n\
-                    site = {site}\n\
-                )"
-                )
-    if user_exists_by_id(site.user_id,db):
-        if site_url_exists(site.url,db):
+        create_site(\n\
+            db = {db},\n\
+            site = {site}\n\
+        )"
+    )
+    if user_exists(db,id=site.user_id):
+        if site_exists(db,url=site.url):
             try:
                 user = db.query(models.User).filter(models.User.id == site.user_id).first()
                 user_info = f"{user.display}:{user.email}"
@@ -204,30 +219,30 @@ def create_site(
                 user_info = "an unkwnown or deleted user"
             finally:
                 raise HTTPException(
-                        status_code=400,
-                        detail=f"URL already exists and owned by {user_info}.\
-                            Please contact support@blogindex.xyz if this is an error."
-                        )
+                    status_code=400,
+                    detail=f"URL already exists and owned by {user_info}.\
+                        Please contact support@blogindex.xyz if this is an error."
+                )
         else:
             try:
                 db_site = models.Site(
-                        url = site.url,
-                        name = site.name,
-                        description = site.description,
-                        moderation = False,
-                        rating = 100,
-                        disabled = False,
-                        value= site.value,
-                        user_id = site.user_id
-                        )
+                    url = site.url,
+                    name = site.name,
+                    description = site.description,
+                    moderation = False,
+                    rating = 100,
+                    disabled = False,
+                    value= site.value,
+                    user_id = site.user_id
+                )
 
                 db.add(db_site)
                 db.commit()
                 db.refresh(db_site)
             except ResponseValidationError as error:
                 raise HTTPException(
-                        status_code=400,
-                        detail=f"Validation Error:{error}"
+                    status_code=400,
+                    detail=f"Validation Error:{error}"
                 )
             return [db_site]
     else:
@@ -235,152 +250,107 @@ def create_site(
             user_id = db.query(models.User).filter(models.User.id == site.user_id).first()
         except ProgrammingError:
             raise HTTPException(
-                    status_code=400,
-                    detail=f"User with id: {site.user_id} does not exist.\
-                        You must provide a valid user_id to attach this site to." 
-                    )
+                status_code=400,
+                detail=f"User with id: {site.user_id} does not exist.\
+                    You must provide a valid user_id to attach this site to." 
+            )
     
 
 def get_all_sites(
-            db: Session,
-            skip: int = 0,
-            limit: int = 100
-            ):
+        db: Session,
+        skip: int = 0,
+        limit: int = 100
+    ):
     logging.debug(f"Function call:\n\
-                get_all_sites(\n\
-                    db: Session = {db},\n\
-                    skip: int = {skip}\n\
-                    limit: int = {limit}\n\
-                )"
-                )
-    return db.query(models.Site).offset(skip).limit(limit).all()
+        get_all_sites(\n\
+            db: Session = {db},\n\
+            skip: int = {skip}\n\
+            limit: int = {limit}\n\
+        )"
+    )
+    if site_exists(db,all_records=True):
+        return db.query(models.Site).offset(skip).limit(limit).all()
+    else:
+        raise HTTPException(
+                    status_code=400,
+                    detail=f"No Sites are in the database." 
+                    )
 
 def get_sites_by_site_id(
-            site_id: int,
-            db: Session,
-            skip: int = 0,
-            limit: int = 100
-            ):
+        site_id: int,
+        db: Session,
+        skip: int = 0,
+        limit: int = 100
+    ):
     logging.debug(f"Function call:\n\
-                get_sites_by_site_id(\n\
-                    site_id: int = {site_id},\n\
-                    db: Session = {db},\n\
-                    skip: int = {skip},\n\
-                    limit: int = {limit}\n\
-                )"
-                )
-    site = db.query(models.Site).filter(models.Site.id == site_id).first()
-    return site
+        get_sites_by_site_id(\n\
+            site_id: int = {site_id},\n\
+            db: Session = {db},\n\
+            skip: int = {skip},\n\
+            limit: int = {limit}\n\
+        )"
+    )
+    if site_exists(db,id=site_id):
+        query = db.query(models.Site).filter(models.Site.id == site_id).offset(skip).limit(limit)
+        return query.first()
+    else:
+         raise HTTPException(
+            status_code=400,
+            detail=f"No site with id of {site_id} exists." 
+        )
 
 def get_sites_by_user_id(
-            user_id: int,
-            db: Session,
-            skip: int = 0,
-            limit: int = 100
-            ):
+        user_id: int,
+        db: Session,
+        skip: int = 0,
+        limit: int = 100
+    ):
     logging.debug(f"Function call:\n\
-                get_sites_by_user_id(\n\
-                    user_id: int = {user_id},\n\
-                    db: Session = {db},\n\
-                    skip: int = {skip},\n\
-                    limit: int = {limit}\n\
-                )"
-                )
-    if user_exists_by_id(user_id,db):
-        return_value = db.query(models.Site).filter(models.Site.user_id == user_id).first()
-        if return_value:
+        get_sites_by_user_id(\n\
+            user_id: int = {user_id},\n\
+            db: Session = {db},\n\
+            skip: int = {skip},\n\
+            limit: int = {limit}\n\
+        )"
+    )
+    if user_exists(db,id=user_id):
+        if site_exists(db,user_id=user_id):
+            query = db.query(models.Site).filter(models.Site.user_id == user_id).offset(skip).limit(limit)
+            return_value = query.all()
+            logging.debug(f"\n\
+                return {return_value}")
             return return_value
         else:
             raise HTTPException(
                 status_code=400,
                 detail=f"No sites by user with id: {user_id}"
             )
-        logging.debug(f"\n\
-        return {return_value}")
     else:
         raise HTTPException(
-                status_code=400,
-                detail=f"No users with id: {id} exist."
-                )
+            status_code=400,
+            detail=f"No users with id: {id} exist."
+        )
 
 def get_sites_by_user_email(
-            email: EmailStr,
-            db: Session,
-            skip: int = 0,
-            limit: int = 100
-            ):
+        email: EmailStr,
+        db: Session,
+        skip: int = 0,
+        limit: int = 100
+    ):
     logging.debug(f"Function call:\n\
-                get_sites_by_user_email(\n\
-                    email: int = {email},\n\
-                    db: Session = {db},\n\
-                    skip: int = {skip},\n\
-                    limit: int = {limit}\n\
-                ):"
-                )
+        get_sites_by_user_email(\n\
+            email: EmailStr = {email},\n\
+            db: Session = {db},\n\
+            skip: int = {skip},\n\
+            limit: int = {limit}\n\
+        ):"
+    )
 
-    if user_exists_by_email(email,db):
+    if user_exists(db,email=email):
         return db.query(models.Site).filter(models.Site.user_id == user.id).all()
     else:
         raise HTTPException(
-                status_code=400,
-                detail=f"No users with email: {email} exist."
-                )
+            status_code=400,
+            detail=f"No users with email: {email} exist."
+        )
         
-
-
-def user_exists_by_email(
-            email: str,
-            db: Session
-            ):
-    exists = db.query(db.query(models.User).filter(models.User.email == email).exists()).scalar()
-    logging.debug(f"\n\
-    user_exists_by_email(\n\
-        email: str = {email},\n\
-        db: Session = {db}\n\
-        ):\n\
-    return {exists}")
-    return exists
-
-def user_exists_by_id(
-            user_id: int,
-            db: Session,
-            json: bool = False
-            ):
-    logging.debug(f"\n\
-    user_exists_by_id(\n\
-        user_id: int = {id},\n\
-        db: Session = {db}\n\
-        ):")
-    exists = db.query(db.query(models.User).filter(models.User.id == user_id).exists()).scalar()
-    logging.debug(f"return {exists}")
-    return exists
-
-def site_url_exists(
-            url: str,
-            db: Session,
-            json: bool = False
-            ):
-    logging.debug(f"\n\
-    usl_exists_in_db(\n\
-        url: int = {url},\n\
-        db: Session = {db}\n\
-        ):")
-    query = db.query(db.query(models.Site).filter(models.Site.url == url).exists())
-    exists = query.scalar()
-    logging.debug(f"return {exists}")
-    return [{query:exists}] if json else exists
-
-def site_name_exists(
-            name: str,
-            db: Session,
-            json: bool = False
-            ):
-    logging.debug(f"\n\
-    usl_exists_in_db(\n\
-        name: str = {url},\n\
-        db: Session = {db}\n\
-        ):")
-    query = db.query(db.query(models.Site).filter(models.Site.name == name).exists())
-    exists = query.scalar()
-    logging.debug(f"return {exists}")
-    return [{query:exists}] if json else exists

@@ -108,29 +108,6 @@ async def create_user(
         pass
     return crud.create_user(db=db, user=user)
 
-@app.get("/user/exists/by-email")
-async def get_user_exists_by_email(
-        email: EmailStr,
-        db: Session = Depends(get_db),
-        json: bool = True
-        ):
-    return crud.user_exists_by_email(
-        email,
-        db
-        )
-
-@app.get("/user/exists/by-id")
-async def get_user_exists_by_id(
-        id: int,
-        db: Session = Depends(get_db),
-        json: bool = True
-        ):
-    return crud.user_exists_by_id(
-        id,
-        db,
-        json
-        )  
-
 @app.get("/user/get/all", response_model=list[schemas.User])
 async def get_all_users(
         skip: int = 0,
@@ -156,7 +133,7 @@ async def get_users_by_id(
         db: Session = Depends(get_db),
         api_key: str = Security(get_api_key)
         ):
-    users = crud.get_user_by_id(db, id)
+    users = crud.get_user_by_id(user_id, db)
     return users
 
 

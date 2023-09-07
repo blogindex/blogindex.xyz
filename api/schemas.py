@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, conint, conlist, Json, constr, HttpUrl
+from pydantic import ConfigDict, BaseModel, EmailStr, conint, conlist, Json, constr, HttpUrl
 from typing import Optional, Any
 
 # model.Key
@@ -37,10 +37,9 @@ class UserUpdate(UserBase):
     hashed_password: str = None
 
 class User(UserBase):
+    model_config = ConfigDict(from_attributes=True)
     id: int
 
-    class Config:
-        from_attributes = True
 
 # model.Site
 class SiteBase(BaseModel):
@@ -56,11 +55,9 @@ class SiteCreate(SiteBase):
     user_id: int
 
 class Site(SiteBase):
+    model_config = ConfigDict(from_attributes=True)
     id: int
     user_id: int
-
-    class Config:
-        from_attributes = True
 
 # model.Page
 class PageBase(BaseModel):
@@ -77,9 +74,8 @@ class PageCreate(PageBase):
     site_id: int
 
 class Page(PageBase):
+    model_config = ConfigDict(from_attributes=True)
     id: int
     user_id: int
     site_id: int
 
-    class Config:
-        from_attributes = True
