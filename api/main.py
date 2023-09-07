@@ -61,7 +61,17 @@ def get_api_key(api_key_header: str = Security(api_key_header)) -> str:
             detail = "Invalid or missing API Key"
     )
 
+@app.get('/', response_class=HTMLResponse)
+async def root():
+    return RedirectResponse(
+                url="https://blogindex.xyz"
+                )
 
+@app.post('/')
+async def root_post():
+    return RedirectResponse(
+                url="https://blogindex.xyz"
+                )
 
 @app.get('/favicon.ico', response_class=FileResponse)
 async def favicon(
@@ -77,20 +87,10 @@ async def logs(
         ):
     with open(os.path.join(app.root_path, "logs", "blogindex.dev")) as log_file:
         log_contents = log_file.read().replace('\n','<br>')
-        return f"<div style='position: -webkit-sticky; position: sticky; top:0; padding:1em;'><button onCLick='location.reload()'>Refresh Logs</button></div><div style='padding-top:1em;font-family:courier;'>{log_contents}</div>"
-
-@app.get('/', response_class=HTMLResponse)
-async def root():
-    return RedirectResponse(url="https://blogindex.xyz")
-
-@app.post('/')
-async def root_post():
-    raise HTTPException(
-        status_code = 404
-    )
+        return f"<html><head><meta name='robots' content='noindex'></head><body><div style='position: -webkit-sticky; position: sticky; top:0; padding:1em;'><button onCLick='location.reload()'>Refresh Logs</button></div><div style='padding-top:1em;font-family:courier;'>{log_contents}</div></body></html>"
 
 @app.post(
-        "/users/create",
+        "/user/create",
         response_model=schemas.User,
         )
 async def create_user(
@@ -108,7 +108,30 @@ async def create_user(
         pass
     return crud.create_user(db=db, user=user)
 
-@app.get("/users/get/all", response_model=list[schemas.User])
+@app.get("/user/exists/by-email")
+async def get_user_exists_by_email(
+        email: EmailStr,
+        db: Session = Depends(get_db),
+        json: bool = True
+        ):
+    return crud.user_exists_by_email(
+        email,
+        db
+        )
+
+@app.get("/user/exists/by-id")
+async def get_user_exists_by_id(
+        id: int,
+        db: Session = Depends(get_db),
+        json: bool = True
+        ):
+    return crud.user_exists_by_id(
+        id,
+        db,
+        json
+        )  
+
+@app.get("/user/get/all", response_model=list[schemas.User])
 async def get_all_users(
         skip: int = 0,
         limit: int = 100,
@@ -118,7 +141,7 @@ async def get_all_users(
     users = crud.get_all_users(db, skip=skip, limit=limit)
     return users
 
-@app.get("/users/get/by-email/{email}", response_model = list[schemas.User])
+@app.get("/user/get/by-email/", response_model = list[schemas.User])
 async def get_users_by_email(
         email: str,
         db: Session = Depends(get_db),
@@ -127,7 +150,7 @@ async def get_users_by_email(
     users = crud.get_user_by_email(email, db)
     return users
 
-@app.get("/users/get/by-id/{user_id}", response_model = list[schemas.User])
+@app.get("/user/get/by-id/", response_model = list[schemas.User])
 async def get_users_by_id(
         user_id: int,
         db: Session = Depends(get_db),
@@ -146,7 +169,7 @@ async def create_key(
     new_key = crud.create_key(key,db)
     return new_key
 
-@app.get("/key/get/by-user_id/{user_id}", response_model = list[schemas.Key])
+@app.get("/key/get/by-user_id/", response_model = list[schemas.Key])
 async def get_user_keys(
         user_id: int,
         db: Session = Depends(get_db),
@@ -207,25 +230,11 @@ async def get_sites_by_user_email(
     sites = crud.get_sites_by_user_email(email, db, skip=skip, limit=limit)
     return sites
 
-@app.get("/user/exists/by-email")
-async def get_user_exists_by_email(
-        email: EmailStr,
+@app.post("/post/create", response_model = list[schemas.SiteCreate])
+def create_site(
+        site: schemas.SiteCreate,
         db: Session = Depends(get_db),
-        json: bool = True
+        api_key: str = Security(get_api_key)
         ):
-    return crud.user_exists_by_email(
-        email,
-        db
-        )
-
-@app.get("/user/exists/by-id")
-async def get_user_exists_by_id(
-        id: int,
-        db: Session = Depends(get_db),
-        json: bool = True
-        ):
-    return crud.user_exists_by_id(
-        id,
-        db,
-        json
-        )    
+    new_site = crud.create_post(db,site)
+    return new_site

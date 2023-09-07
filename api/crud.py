@@ -195,67 +195,51 @@ def create_site(
                     site = {site}\n\
                 )"
                 )
-    try:
-        user_id = db.query(models.User).filter(models.User.id == site.user_id).first()
-    except ProgrammingError:
-        raise HTTPException(
-                status_code=400,
-                detail=f"User with id: {site.user_id} does not exist.\
-                    You must provide a valid user_id to attach this site to." 
-                )
-    
-    try:
-        url = db.query(models.Site).filter(models.Site.name == site.url).first().url
-    except AttributeError:
-        url = ""
-    try:
-        name = db.query(models.Site).filter(models.Site.name == site.name).first().name
-    except AttributeError:
-        name = ""
+    if user_exists_by_id(site.user_id,db):
+        if site_url_exists(site.url,db):
+            try:
+                user = db.query(models.User).filter(models.User.id == site.user_id).first()
+                user_info = f"{user.display}:{user.email}"
+            except:
+                user_info = "an unkwnown or deleted user"
+            finally:
+                raise HTTPException(
+                        status_code=400,
+                        detail=f"URL already exists and owned by {user_info}.\
+                            Please contact support@blogindex.xyz if this is an error."
+                        )
+        else:
+            try:
+                db_site = models.Site(
+                        url = site.url,
+                        name = site.name,
+                        description = site.description,
+                        moderation = False,
+                        rating = 100,
+                        disabled = False,
+                        value= site.value,
+                        user_id = site.user_id
+                        )
 
-    if url:
+                db.add(db_site)
+                db.commit()
+                db.refresh(db_site)
+            except ResponseValidationError as error:
+                raise HTTPException(
+                        status_code=400,
+                        detail=f"Validation Error:{error}"
+                )
+            return [db_site]
+    else:
         try:
-            user = db.query(models.User).filter(models.User.id == url.user_id).first()
-            display = user.display
-            email = user.email
-        except:
-            display = "Unknown"
-            email = "Unknown"
-        raise HTTPException(
-                status_code=400,
-                detail=f"URL already exists and owned by {user.display}:{user.email}.\
-                    Please contact support@blogindex.xyz if this is an error."
-                )
-    if name and url:
-        user = db.query(models.User).filter(models.User.id == name.user_id).first()
-        raise HTTPException(
-                status_code=400,
-                detail=f"Site named {site.name} exists with a url of {url} owned by\
-                    {user.display}:{user.email}.  If you would like to duplicate this title,\
-                    use `/site/create/dup_name` endpoint.  If you believe use of this name is\
-                    a violation of your rights, please contact support@blogindex.xyz"
-                )
-    try:
-        db_site = models.Site(
-                url = site.url,
-                name = site.name,
-                description = site.description,
-                moderation = False,
-                rating = 100,
-                disabled = False,
-                value= site.value,
-                user_id = site.user_id
-                )
-
-        db.add(db_site)
-        db.commit()
-        db.refresh(db_site)
-    except ResponseValidationError as error:
-        raise HTTPException(
-                status_code=400,
-                detail=f"Validation Error:{error}"
-        )
-    return [db_site]
+            user_id = db.query(models.User).filter(models.User.id == site.user_id).first()
+        except ProgrammingError:
+            raise HTTPException(
+                    status_code=400,
+                    detail=f"User with id: {site.user_id} does not exist.\
+                        You must provide a valid user_id to attach this site to." 
+                    )
+    
 
 def get_all_sites(
             db: Session,
@@ -371,13 +355,32 @@ def user_exists_by_id(
     logging.debug(f"return {exists}")
     return exists
 
-def exists_in_db(
-            query,
-            db,
-            scalar: bool = False,
+def site_url_exists(
+            url: str,
+            db: Session,
             json: bool = False
             ):
-    exists = db.query(db.query(query.exists))
-    exists = exsists.scalar() if scalar else exists.first()
-    return [{query:exists}] if json\
-                            else exists
+    logging.debug(f"\n\
+    usl_exists_in_db(\n\
+        url: int = {url},\n\
+        db: Session = {db}\n\
+        ):")
+    query = db.query(db.query(models.Site).filter(models.Site.url == url).exists())
+    exists = query.scalar()
+    logging.debug(f"return {exists}")
+    return [{query:exists}] if json else exists
+
+def site_name_exists(
+            name: str,
+            db: Session,
+            json: bool = False
+            ):
+    logging.debug(f"\n\
+    usl_exists_in_db(\n\
+        name: str = {url},\n\
+        db: Session = {db}\n\
+        ):")
+    query = db.query(db.query(models.Site).filter(models.Site.name == name).exists())
+    exists = query.scalar()
+    logging.debug(f"return {exists}")
+    return [{query:exists}] if json else exists
