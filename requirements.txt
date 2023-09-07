@@ -5,3 +5,4 @@ sqlalchemy
 mariadb
 pydantic[email]
 psycopg2
+pyyaml

@@ -1,0 +1,9 @@
+API_KEY_ADMIN:  "aaaa-bbbb-cccc"
+API_KEY_HASH:   "In5ecuRe-h@sH"
+DEVEL:          False
+LOG_LEVEL:      INFO
+LOG_FILE:       "/blogindex.xyz/logs/blogindex.dev"
+DB:             "blogindex"
+DB_USER:        "blogindex"
+DB_PASS:        "In5ecuRe-P@5S"
+DB_URL:         "postgresql+psycopg2://blogindex:blogindex@db/blogindex"
