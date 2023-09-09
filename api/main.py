@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from os import environ
 import os
+import sys
 
 from . import crud, models, schemas
 from .database import SessionLocal, engine
@@ -44,8 +45,6 @@ def get_api_keys(api_keys: list = [blogindex.config["API_KEY_ADMIN"]]) -> list:
         db.close()
     return api_keys
 api_keys = get_api_keys()
-
-print(api_keys)
 
 
 
@@ -98,12 +97,10 @@ async def create_user(
         db: Session = Depends(get_db),
         api_key: str = Security(get_api_key)
         ):
-    print(f"-------------------\n {user.email}\n ---------------------")
     try:
         user_by_email = crud.get_user_by_email(db, email=user.email)
         if user_by_email:
             raise HTTPException(status_code=400, detail="Email already registered")
-        print(f"-------------------\n {user}\n ---------------------")
     except TypeError:
         pass
     return crud.create_user(db=db, user=user)
@@ -206,12 +203,3 @@ async def get_sites_by_user_email(
         ):
     sites = crud.get_sites_by_user_email(email, db, skip=skip, limit=limit)
     return sites
-
-@app.post("/post/create", response_model = list[schemas.SiteCreate])
-def create_site(
-        site: schemas.SiteCreate,
-        db: Session = Depends(get_db),
-        api_key: str = Security(get_api_key)
-        ):
-    new_site = crud.create_post(db,site)
-    return new_site

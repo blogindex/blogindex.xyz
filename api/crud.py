@@ -1,10 +1,10 @@
-import logging
 from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import ResponseValidationError
 from pydantic import EmailStr, ValidationError
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError, ProgrammingError
-import random, string
+import random, string, sys, logging
+import sys
 
 from .helpers.records import user_exists, site_exists
 from . import models, schemas
@@ -22,12 +22,7 @@ def get_user_by_id(
     Returns:
         _type_: _description_
     """
-    logging.debug(f"Function call:\n\
-        get_user_by_id(\n\
-            user_id: int = {user_id}\n\
-            db: Session = {db},\n\
-        )"
-    )
+    logging.debug(f"{sys._getframe().f_code.co_name}:\n{locals()}")
     if user_exists(db,id=user_id):
         user = db.query(models.User).filter(models.User.id == user_id).first()
         return [user]
@@ -41,12 +36,7 @@ def get_user_by_email(
         email: str,
         db: Session
     ):
-    logging.debug(f"Function call:\n\
-        get_user_keys(\n\
-            email: str = {email}\n\
-            db: Session = {db},\n\
-        )"
-    )
+    logging.debug(f"{sys._getframe().f_code.co_name}:\n{locals()}")
     if user_exists(db,email):
         user = db.query(models.User).filter(models.User.email == email).first()
         return [user]
@@ -61,13 +51,7 @@ def get_all_users(
         skip: int = 0,
         limit: int = 100
     ):
-    logging.debug(f"Function call:\n\
-        get_user_keys(\n\
-            db: Session = {db},\n\
-            skip: int = {skip}\n\
-            limit: int = {limit}\n\
-        )"
-    )
+    logging.debug(f"{sys._getframe().f_code.co_name}:\n{locals()}")
     query = db.query(models.User).offset(skip).limit(limit) 
     if db.query(query.exists()).first():
         return query.all()
@@ -91,12 +75,7 @@ def create_user(
     Returns:
         schemas.User: Pydantic Model
     """
-    logging.debug(f"Function call:\n\
-        get_user_keys(\n\
-            db: Session = {db},\n\
-            user: schemas.UserCreate = {user}\n\
-        )"
-    )
+    logging.debug(f"{sys._getframe().f_code.co_name}:\n{locals()}")
     
     fake_hashed_password = user.hashed_password + "notreallyhashed"
     db_user = models.User(email=user.email, display=user.display, hashed_password=fake_hashed_password)
@@ -109,12 +88,7 @@ def create_key(
         key: schemas.KeyDisplay,
         db: Session
     ):
-    logging.debug(f"Function call:\n\
-        get_user_keys(\n\
-            key: schemas.KeyDisplay = {key}\n\
-            db: Session = {db},\n\
-        )"
-    )
+    logging.debug(f"{sys._getframe().f_code.co_name}:\n{locals()}")
     """ Generates and inserts a new API Key into the database
 
     Args:
@@ -169,12 +143,7 @@ def get_user_keys(
                     This should *NOT* be made available with an endpoint in production
                     Use WISELY!!!!!
     """
-    logging.debug(f"Function call:\n\
-        get_user_keys(\n\
-            user_id: int = {user_id}\n\
-            db: Session = {db},\n\
-        )"
-    )
+    logging.debug(f"{sys._getframe().f_code.co_name}:\n{locals()}")
             
  
     user_keys = db.query(models.Key).filter(models.Key.user_id == user_id).all()
@@ -204,12 +173,7 @@ def create_site(
     Returns:
         _type_: _description_
     """
-    logging.debug(f"Function call:\n\
-        create_site(\n\
-            db = {db},\n\
-            site = {site}\n\
-        )"
-    )
+    logging.debug(f"{sys._getframe().f_code.co_name}:\n{locals()}")
     if user_exists(db,id=site.user_id):
         if site_exists(db,url=site.url):
             try:
@@ -261,13 +225,7 @@ def get_all_sites(
         skip: int = 0,
         limit: int = 100
     ):
-    logging.debug(f"Function call:\n\
-        get_all_sites(\n\
-            db: Session = {db},\n\
-            skip: int = {skip}\n\
-            limit: int = {limit}\n\
-        )"
-    )
+    logging.debug(f"{sys._getframe().f_code.co_name}:\n{locals()}")
     if site_exists(db,all_records=True):
         return db.query(models.Site).offset(skip).limit(limit).all()
     else:
@@ -282,14 +240,8 @@ def get_sites_by_site_id(
         skip: int = 0,
         limit: int = 100
     ):
-    logging.debug(f"Function call:\n\
-        get_sites_by_site_id(\n\
-            site_id: int = {site_id},\n\
-            db: Session = {db},\n\
-            skip: int = {skip},\n\
-            limit: int = {limit}\n\
-        )"
-    )
+    
+    logging.debug(f"{sys._getframe().f_code.co_name}:\n{locals()}")
     if site_exists(db,id=site_id):
         query = db.query(models.Site).filter(models.Site.id == site_id).offset(skip).limit(limit)
         return query.first()
@@ -305,20 +257,12 @@ def get_sites_by_user_id(
         skip: int = 0,
         limit: int = 100
     ):
-    logging.debug(f"Function call:\n\
-        get_sites_by_user_id(\n\
-            user_id: int = {user_id},\n\
-            db: Session = {db},\n\
-            skip: int = {skip},\n\
-            limit: int = {limit}\n\
-        )"
-    )
+    logging.debug(f"{sys._getframe().f_code.co_name}:\n{locals()}")
     if user_exists(db,id=user_id):
         if site_exists(db,user_id=user_id):
             query = db.query(models.Site).filter(models.Site.user_id == user_id).offset(skip).limit(limit)
             return_value = query.all()
-            logging.debug(f"\n\
-                return {return_value}")
+            logging.debug(f"return {return_value}")
             return return_value
         else:
             raise HTTPException(
@@ -337,14 +281,7 @@ def get_sites_by_user_email(
         skip: int = 0,
         limit: int = 100
     ):
-    logging.debug(f"Function call:\n\
-        get_sites_by_user_email(\n\
-            email: EmailStr = {email},\n\
-            db: Session = {db},\n\
-            skip: int = {skip},\n\
-            limit: int = {limit}\n\
-        ):"
-    )
+    logging.debug(f"{sys._getframe().f_code.co_name}:\n{locals()}")
 
     if user_exists(db,email=email):
         return db.query(models.Site).filter(models.Site.user_id == user.id).all()

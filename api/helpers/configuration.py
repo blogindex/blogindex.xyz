@@ -27,6 +27,7 @@ from pydantic import BaseModel, EmailStr, conint, conlist, Json, constr, HttpUrl
 from os import environ, path
 import yaml
 from pprint import pprint
+import sys
 
 class config_schema(BaseModel):
     CONFIG_FILE: str = "/blogindex.xyz/config.yml"
@@ -97,15 +98,6 @@ class blogindex():
             logging.debug(pprint(config_model))
             print(pprint(config_model))
         except ValidationError as exc:
-            logging.debug(f"\n\
-                Validation Error:\n\
-                {repr(exc.errors()[0]['type'])}"
-                )
-            print(f"\n\
-                ####################\n\
-                Validation Error:\n\
-                {repr(exc.errors()[0]['type'])}"
-                )
             raise
         return self.config
 
