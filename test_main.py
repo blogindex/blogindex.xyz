@@ -1,122 +1,116 @@
 from fastapi.testclient import TestClient
+from os import environ
+import sys
 
 from api.main import app
 import api.schemas as schemas
 from api.helpers.checks import schema_check
 
+if "TEST_KEY" not in environ:
+    sys.exit("You must set \'TEST_KEY\' environment variable")
+TEST_KEY = environ["TEST_KEY"]
+good_bearer = {'Authorization': f"Bearer {TEST_KEY}"}
+bad_bearer = {'Authorization': f"Bearer {TEST_KEY}-BAD"}
+no_bearer = {}
+
 client = TestClient(app)
-api_key = "KKVy-0B6G-JzBz-NweS-p6sU-GhaX-hHYk-zIcM"
 
-# ROOT /
-def test_get_root():
-    response= client.get("/", follow_redirects=False)
-    assert response.status_code == 307
-    print(response)
-    #assert response.location == "https://blogindex.xyz"
 
-def test_post_root():
-    response = client.post(
-        "/",
-        follow_redirects=False
-    )
-    assert response.status_code == 307
-    #assert response.location == "https://blogindex.xyz"
-
-# /user/get/all
-def test_user_get_all():
+# /author/get/all
+def test_author_get_all():
     response = client.get(
-        "/user/get/all",
-        headers = {"X-API-Key" : api_key}
+        "/author/get/all",
+        headers = good_bearer
     )
     assert response.status_code == 200
-    assert schema_check(schemas.User(**response.json()[0]))
+    assert schema_check(schemas.Author(**response.json()[0]))
 
-def test_user_get_all_no_apikey():
+def test_author_get_all_no_apikey():
     response = client.get(
-        "/user/get/all"
+        "/author/get/all"
     )
     assert response.status_code == 403
 
-def test_user_get_all_bad_apikey():
+def test_author_get_all_bad_apikey():
     response = client.get(
-        "/user/get/all",
-        headers = {"X-API-Key" : "invalid-key"}
+        "/author/get/all",
+        headers = bad_bearer
     )
-    assert response.status_code == 401
+    assert response.status_code == 400
 
-# /user/get/by-email
-def test_user_get_by_email():
+# /author/get/by-email
+def test_author_get_by_email():
     response = client.get(
-        "/user/get/by-email?email=kenny@beardedtek.com",
-        headers = {"X-API-Key" : api_key}
+        "/author/get/by-email?email=kenny@beardedtek.com",
+        headers = good_bearer
     )
     assert response.status_code == 200
-    assert schema_check(schemas.User(**response.json()[0]))
+    assert schema_check(schemas.Author(**response.json()[0]))
 
-def test_user_get_by_email_bad_email():
+def test_author_get_by_email_bad_email():
     response = client.get(
-        "/user/get/by-email?email=invalid@bad.net",
-        headers = {"X-API-Key" : api_key}
+        "/author/get/by-email?email=invalid@bad.net",
+        headers = good_bearer
     )
     assert response.status_code == 400
     assert response.json() == {
-        "detail": "No users with `email` == invalid@bad.net exist."
+        "detail": "no records"
     }
 
-def test_user_get_by_email_no_apikey():
+def test_author_get_by_email_no_apikey():
     response = client.get(
-        "/user/get/by-email?email=kenny@beardedtek.com"
+        "/author/get/by-email?email=kenny@beardedtek.com"
     )
     assert response.status_code == 403
 
-def test_user_get_by_email_bad_apikey():
+def test_author_get_by_email_bad_apikey():
     response = client.get(
-        "/user/get/by-email?email=kenny@beardedtek.com",
-        headers = {"X-API-Key" : "invalid-key"}
+        "/author/get/by-email?email=kenny@beardedtek.com",
+        headers = bad_bearer
     )
-    assert response.status_code == 401
+    assert response.status_code == 400
 
-# /user/get/by-id
-def test_user_get_by_id():
-    user_id = 1
+# /author/get/by-id
+def test_author_get_by_id():
+    id = 1
     response = client.get(
-        f"/user/get/by-id?user_id={user_id}",
-        headers = {"X-API-Key" : api_key}
+        f"/author/get/by-id?id={id}",
+        headers = good_bearer
     )
     assert response.status_code == 200
-    assert schema_check(schemas.User(**response.json()[0]))
+    assert schema_check(schemas.Author(**response.json()[0]))
 
-def test_user_get_by_id_bad_id():
-    user_id = 4242
+def test_author_get_by_id_bad_id():
+    id = 4242
     response = client.get(
-        f"/user/get/by-id?user_id={user_id}",
-        headers = {"X-API-Key" : api_key}
+        f"/author/get/by-id?id={id}",
+        headers = good_bearer
     )
     assert response.status_code == 400
     assert response.json() == {
-        "detail": f"No users with `user_id` == `{user_id}` exist."
+        "detail": f"no records"
     }
 
-def test_user_get_by_id_no_apikey():
-    user_id = 1
+def test_author_get_by_id_no_apikey():
+    id = 1
     response = client.get(
-        f"/user/get/by-id?user_id={user_id}",
+        f"/author/get/by-id?id={id}",
     )
     assert response.status_code == 403
 
-def test_user_get_by_id_bad_apikey():
-    user_id = 1
+def test_author_get_by_id_bad_apikey():
+    id = 1
     response = client.get(
-        f"/user/get/by-id?user_id={user_id}",
-        headers = {"X-API-Key" : "invalid-key"}
+        f"/author/get/by-id?id={id}",
+        headers = bad_bearer
     )
-    assert response.status_code == 401
+    assert response.status_code == 400
 
 # /site/get/all
 def test_site_get_all():
     response = client.get(
         "/site/get/all",
-        headers = {"X-API-Key" : api_key}
+        headers = good_bearer
     )
     assert response.status_code == 200
     assert schema_check(schemas.Site(**response.json()[0]))
@@ -130,6 +124,6 @@ def test_site_get_all_no_apikey():
 def test_site_get_all_bad_apikey():
     response = client.get(
         "/site/get/all",
-        headers = {"X-API-Key" : "invalid-key"}
+        headers = bad_bearer
     )
-    assert response.status_code == 401
+    assert response.status_code == 400

@@ -1,24 +1,17 @@
-# blogindex.xyz
-A Value 4 Value Blogging Community
+# theblogindex.org API
+## What is The Blog Index?
+A Value 4 Value Blogging Community being built from scratch
 
-## What is this repo?
-This will be the base for blogindex.xyz.  All future sites will deploy from this repository.
+# WARNING: UNDER HEAVY DEVELOPMENT
 
-## What's done?
+Currently there is heavy development on the API using FastAPI
 
-### /api
-- main.py
-  - sets up FastAPI
-- models.py
-  - contains pydantic models defining the database
-- schemas.py
-  - contains pydantic schemas to verify data
-- database.py
-  - sets up database connections
-- crud.py
-  - Contains `c`reate, `r`ead, `u`pdate, and `d`elete functions.
+## How to help
 
-- helpers
-  - configuration.py
-    - defines configuration of site with class `blogindex()`
+At this point, there is heavy coordination going on off GitHub on Matrix.
+
+Join us in the [blogindex Matrix Space](https://matrix.to/#/#blogindex.xyz:matrix.org) to coordinate development efforts.
+
+Once we get into a more stable, usable state, more will be coordinated on GitHub.
+
 

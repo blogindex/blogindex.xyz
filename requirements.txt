@@ -10,3 +10,4 @@ requests
 requests_toolbelt
 pytest
 httpx
+pyjwt[crpyto]

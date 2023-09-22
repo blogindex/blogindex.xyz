@@ -1,3 +1,5 @@
+# Ignore .test_key
+.testkey
 # Don't upload .vscode
 .vscode
 
