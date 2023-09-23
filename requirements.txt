@@ -11,3 +11,4 @@ requests_toolbelt
 pytest
 httpx
 pyjwt[crpyto]
+cryptography
