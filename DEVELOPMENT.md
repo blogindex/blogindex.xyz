@@ -8,7 +8,12 @@ Instructions for bringing up a postgres database via docker will go here
 
 ### Nix
 
-Instructions for bringing up a dev environment in Nix will go here
+If you're running nix you can use the development config provided in [dev/nix](dev/nix) to bootstrap everything.
+
+```sh
+nix develop # Evoke development shell
+./start.sh # Start the app
+```
 
 ### Test
 

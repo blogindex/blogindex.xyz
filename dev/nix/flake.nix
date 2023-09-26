@@ -20,7 +20,6 @@
           default = pkgs.mkShell {
             nativeBuildInputs = [ pkgs.bashInteractive ];
             buildInputs = with pkgs; [
-              mariadb-connector-c
               postgresql
               python3
             ];
