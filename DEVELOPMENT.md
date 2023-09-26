@@ -4,7 +4,7 @@
 
 ### Docker
 
-Instructions for bringing up a postgres database via docker will go here
+To stand up the app in docker you can use the docker
 
 ### Nix
 
