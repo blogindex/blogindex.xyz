@@ -21,7 +21,7 @@ def create_author(
                 display = author.display,
                 image = author.image,
                 avatar = author.avatar,
-                moderation = author.moderation,
+                flags = author.flags,
                 rating = author.rating,
                 disabled = author.disabled,
                 value = author.value
@@ -108,7 +108,7 @@ def create_site(
                 )
         else:
             try:
-                Site = models.Site(
+                site = models.Site(
                     url = site.url,
                     name = site.name,
                     description = site.description,
@@ -119,15 +119,15 @@ def create_site(
                     user_id = site.user_id
                 )
 
-                db.add(Site)
+                db.add(site)
                 db.commit()
-                db.refresh(Site)
+                db.refresh(site)
             except ResponseValidationError as error:
                 raise HTTPException(
                     status_code=400,
                     detail=f"Validation Error:{error}"
                 )
-            return [Site]
+            return site
     else:
         try:
             user_id = db.query(models.Author).filter(models.Author.id == site.user_id).first()

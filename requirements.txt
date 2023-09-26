@@ -2,7 +2,6 @@ wheel
 uvicorn[standard]
 fastapi
 sqlalchemy
-mariadb
 pydantic[email]
 psycopg2
 pyyaml

@@ -1,0 +1,34 @@
+---
+version: '3'
+services:
+
+  db:
+    container_name: postgres-api-test
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=blogindex
+      - POSTGRES_PASSWORD=blogindex
+      - POSTGRES_DB=blogindex
+
+  api-test:
+    container_name: api-test
+    build: .
+    image: blogindex/api-test:latest
+#    volumes:
+#      - /path/to/local/source:/blogindex.xyz
+    depends_on:
+     - db
+    environment:
+      - DATABASE_DB="${DATABASE_DB:-blogindex}"
+      - DATABASE_DB_HOST="${DATABASE_DB_HOST:-db}"
+      - DATABASE_DB_USER="${DATABASE_DB_USER:-blogindex}"
+      - DATABASE_DB_PASS="${DATABASE_DB_PASS:-blogindex}"
+      - BLOGINDEX_DEBUG="${BLOGINDEX_DEBUG:-True}"
+      - BLOGINDEX_LOG_LEVEL="${BLOGINDEX_LOG_LEVEL:-DEBUG}"
+      # These variables can be obtained by messaging @BeardedTek:matrix.org
+      - AUTH0_DOMAIN="${AUTH0_DOMAIN}"
+      - AUTH0_API_AUDIENCE=""${AUTH0_API_AUDIENCE}"
+      - AUTH0_ISSUER=""${AUTH0_ISSUER}"
+      - AUTH0_ALGORITHMS=""${AUTH0_ALGORITHMS}"
+      - TESTKEY="${TESTKEY}"
