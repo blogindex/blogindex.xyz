@@ -116,7 +116,7 @@ async def get_author_by_id(
     author = crud.get_author_by_id(id, db)
     return author
 
-@app.post("/site/create", response_model = list[schemas.SiteCreate])
+@app.post("/site/create", response_model = schemas.SiteCreate)
 def create_site(
         site: schemas.SiteCreate,
         db: Session = Depends(get_db),
