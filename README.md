@@ -14,4 +14,5 @@ Join us in the [blogindex Matrix Space](https://matrix.to/#/#blogindex.xyz:matri
 
 Once we get into a more stable, usable state, more will be coordinated on GitHub.
 
-
+## Development
+SEE [DEVELOPMENT.md](DEVELOPMENT.md) for information on getting a local development environment up

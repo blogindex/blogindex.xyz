@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+cd /blogindex.xyz/
+echo "Cleaning .test virtual environment"
+rm -rf /blogindex.xyz/.test
+echo "Creating new .test virtual environment"
+python -m venv .test
+echo "Activating .test virtual environment"
+source .test/bin/activate
+echo "Install core requirements"
+pip install -r requirements.txt
+echo "Install testing requirements"
+pip install -r test_requirements.txt
+echo "Running Tests"
+pytest

@@ -166,6 +166,25 @@ def test_author_get_by_id_bad_apikey():
     )
     assert response.status_code == 400
 
+# /site/create
+def test_site_create():
+    response = client.post(
+        "/site/create",
+        headers= good_bearer,
+        json = site_data
+    )
+    return_json = json.loads(response.text)
+    assert response.status_code == 200
+    for key in return_json:
+        assert key in return_json
+        data = return_json[key]
+        if key == "id":
+            global site_id
+            site_id = data
+            assert isinstance(site_id,int)
+        else:
+            assert data == site_data[key]
+            
 # /site/get/all
 def test_site_get_all():
     response = client.get(
@@ -187,22 +206,3 @@ def test_site_get_all_bad_apikey():
         headers = bad_bearer
     )
     assert response.status_code == 400
-
-# /site/create
-def test_site_create():
-    response = client.post(
-        "/site/create",
-        headers= good_bearer,
-        json = site_data
-    )
-    return_json = json.loads(response.text)
-    assert response.status_code == 200
-    for key in return_json:
-        assert key in return_json
-        data = return_json[key]
-        if key == "id":
-            global site_id
-            site_id = data
-            assert isinstance(site_id,int)
-        else:
-            assert data == site_data[key]
