@@ -1,5 +1,7 @@
 # theblogindex.org API
+
 ## What is The Blog Index?
+
 A Value 4 Value Blogging Community being built from scratch
 
 # WARNING: UNDER HEAVY DEVELOPMENT
