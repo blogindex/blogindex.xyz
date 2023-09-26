@@ -7,8 +7,8 @@ python -m venv .test
 echo "Activating .test virtual environment"
 source .test/bin/activate
 echo "Install core requirements"
-pip install -r requirements.txt
+pip install -qqq -r requirements.txt
 echo "Install testing requirements"
-pip install -r test_requirements.txt
+pip install -qqq -r test_requirements.txt
 echo "Running Tests"
 pytest

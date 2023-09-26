@@ -23,3 +23,7 @@ docker-compose up
 
 
 Upon Completion it will tell you the results.  From here hit `ctrl-C` and type `docker compose down`
+
+## Demonstration:
+#### *NOTE: This GIF is sped up for clarity*
+![Automated Test GIF](dev/docker/test/automated_test.gif "Automated Test")
