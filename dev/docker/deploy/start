@@ -17,7 +17,7 @@ echo "Activating virtual environment"
 source venv/bin/activate
 
 echo "Installing requirements"
-pip install -qq -r /blogindex/requirements.txt
+pip install -q -r /blogindex/requirements.txt
 
 echo "Creating Log Directory"
 logs/blogindex.dev
