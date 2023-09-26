@@ -39,7 +39,6 @@ def get_db():
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
-app.mount("/logs", StaticFiles(directory="logs"),name="logs")
 
 # HTTP Bearer Authentication
 token_auth_scheme = HTTPBearer()
