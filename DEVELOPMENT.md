@@ -4,7 +4,7 @@
 
 ### Docker
 
-To stand up the app in docker you can use the docker
+See [dev/docker/deploy](dev/docker/deploy) for a docker-compose file to deploy the app for testing
 
 ### Nix
 

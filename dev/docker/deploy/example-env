@@ -1,0 +1,20 @@
+# Local Codebase Config
+USE_LOCAL_CODEBASE=false
+LOCAL_CODEBASE=/path/to/local/codebase
+
+# Log Level Config
+BLOGINDEX_LOG_LEVEL="DEBUG"
+
+# Database Config
+DATABASE_DB="blogindex"
+DATABASE_DB_HOST="db"
+DATABASE_DB_USER="blogindex"
+DATABASE_DB_PASS="blogindex"
+BLOGINDEX_DEBUG="True"
+
+# The following variables can be obtained by messaging @BeardedTek:matrix.org
+# You can create your own instance of Auth0 for an API at https://auth0.com
+AUTH0_DOMAIN=""
+AUTH0_API_AUDIENCE=""
+AUTH0_ISSUER="h"
+AUTH0_ALGORITHMS=""

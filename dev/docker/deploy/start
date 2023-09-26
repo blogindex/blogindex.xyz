@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
-# Clone the branch requested
-git clone -b ${BLOGINDEX_BRANCH:-main} https://github.com/blogindex/blogindex.xyz /blogindex
+if [ "${USE_LOCAL_CODEBASE:-false}" == "true" ]; then
+    echo "Using local codebase located at /local"
+    ln -s /local /blogindex
+else
+    git clone -b ${BLOGINDEX_BRANCH:-main} https://github.com/blogindex/blogindex.xyz /blogindex
+fi
+
 export PGPASSWORD=${DATABASE_DB_PASS}
 echo -n "Waiting until ${DATABASE_DB} up on ${DATABASE_DB_HOST}"
 until psql -h ${DATABASE_DB_HOST:-db} -U ${DATABASE_DB_USER:-blogindex} ${DATABASE_DB:-blogindex} --list 2>/dev/null
@@ -10,24 +15,17 @@ do
 done
 cd /blogindex
 
-echo "Creating virtual environment"
-python -m venv venv
+echo "Creating virtual environment at /venv"
+python -m venv /venv
 
 echo "Activating virtual environment"
-source venv/bin/activate
+source /venv/bin/activate
 
 echo "Installing requirements"
-pip install -q -r /blogindex/requirements.txt
-
-echo "Creating Log Directory"
-logs/blogindex.dev
+pip install -q -r requirements.txt
 
 echo "Starting Application"
 ./start.sh
 
-echo "Removing repository"
-cd /
-rm -rf /blogindex
-
 echo "Sleeping so you can access the container after failure / stop"
-sleep 9999999999999
+sleep 10000

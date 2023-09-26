@@ -7,18 +7,21 @@ services:
     container_name: api
     build: .
     image: blogindex/api:main
+    ports:
+      - 8000:8000
     volumes:
-      - /path/to/codebase:/blogindex/ # OPTIONAL
+      - ${LOCAL_CODEBASE:-./blogindex}:/local
     depends_on:
       - apidb
     environment:
+      - USE_LOCAL_CODEBASE=${USE_LOCAL_CODEBASE:-false}
       - DATABASE_DB=${DATABASE_DB:-blogindex}
       - DATABASE_DB_HOST=${DATABASE_DB_HOST:-db}
       - DATABASE_DB_USER=${DATABASE_DB_USER:-blogindex}
       - DATABASE_DB_PASS=${DATABASE_DB_PASS:-blogindex}
       - BLOGINDEX_DEBUG=${BLOGINDEX_DEBUG:-True}
       - BLOGINDEX_LOG_LEVEL=${BLOGINDEX_LOG_LEVEL:-DEBUG}
-      # These variables can be obtained by messaging @BeardedTek:matrix.org
+      # The following variables can be obtained by messaging @BeardedTek:matrix.org
       - AUTH0_DOMAIN=${AUTH0_DOMAIN}
       - AUTH0_API_AUDIENCE=${AUTH0_API_AUDIENCE}
       - AUTH0_ISSUER=${AUTH0_ISSUER}
