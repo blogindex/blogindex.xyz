@@ -1,7 +1,7 @@
 # Deploy API for Development
 
 Using docker, you can stand up the app using either a branch of the repository or a local codebase for manual testing.
-By design it completely destroys the environment each time you stop the container so that all scripts, setup and teardown functions just like you're setting it up the first time.
+By design it completely destroys the environment each time you stop the container so that all scripts, setup and teardown function just like you're setting it up the first time.
 
 ## Configuration
 ### Obtain Auth0 Credentials
