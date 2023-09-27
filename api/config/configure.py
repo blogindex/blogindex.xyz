@@ -1,27 +1,3 @@
-"""
-api/helpers/configuration.py
-------------------------
-- blogindex.config set with sane default values
-- default values overriden with values from
-  1. config.yml
-  2. environment variables.
-
-  config.yml will always override defaults
-  environment vars will override everything
-
-Usage:
-------------------------
-# Import
-from .helpers.configuration import config_schema, blogindex
-
-# Setup Class
-blogindex = blogindex()
-# Run Init <-- This can be done any time you want to reload the configuration on the fly
-blogindex.get(config_schema)
-
-# Access config
-LOG_LEVEL = blogindex.config['LOG_LEVEL']
-"""
 import logging
 from pydantic import BaseModel, EmailStr, conint, conlist, Json, constr, HttpUrl, FilePath, ValidationError
 from os import environ, path
@@ -75,6 +51,8 @@ config = {
         "schema": "auth0"
     }
 }
+
+
 
 class Configure():
     def __init__(

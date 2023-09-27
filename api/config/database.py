@@ -4,6 +4,7 @@ from pprint import pprint
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 
+
 class database():
     def __init__(self,config:dict):
         url  = f"postgresql+psycopg2://{config['DATABASE']['DB_USER']}:{config['DATABASE']['DB_PASS']}@{config['DATABASE']['DB_HOST']}/{config['DATABASE']['DB']}"

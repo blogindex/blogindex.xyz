@@ -7,12 +7,11 @@ import randominfo
 from api.main import app
 import api.schemas as schemas
 from api.helpers.checks import schema_check
+from key import credentials
 
-if "TEST_KEY" not in environ:
-    sys.exit("You must set \'TEST_KEY\' environment variable")
-TEST_KEY = environ["TEST_KEY"]
-good_bearer = {'Authorization': f"Bearer {TEST_KEY}"}
-bad_bearer = {'Authorization': f"Bearer {TEST_KEY}-BAD"}
+
+good_bearer = {'Authorization': f"Bearer {credentials['KEY']}"}
+bad_bearer = {'Authorization': f"Bearer {credentials['KEY']}-BAD"}
 no_bearer = {}
 
 # Generate Random Author / Site / Post Data

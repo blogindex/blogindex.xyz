@@ -8,4 +8,4 @@ COPY test /test
 
 WORKDIR /blogindex.xyz
 
-ENTRYPOINT sleep 10 && /test
+ENTRYPOINT /test
