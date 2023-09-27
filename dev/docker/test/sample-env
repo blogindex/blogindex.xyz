@@ -1,0 +1,20 @@
+BLOGINDEX_LOG_LEVEL="DEBUG"
+
+DATABASE_DB="blogindex"
+DATABASE_DB_HOST="apidb"
+DATABASE_DB_USER="blogindex"
+DATABASE_DB_PASS="blogindex"
+BLOGINDEX_DEBUG="True"
+
+# You can obtain the information below from @beardedtek:matrix.org
+# You must set *EITHER* AUTH0_CLIENT_ID and AUTH0_CLIENT_SECRET **OR** TEST_KEY ****NOT BOTH****
+# In the future there will be an automated system to cut this step out.
+AUTH0_DOMAIN=""
+AUTH0_API_AUDIENCE=""
+AUTH0_ISSUER=""
+AUTH0_ALGORITHMS="RS256"
+AUTH0_CLIENT_ID=""
+AUTH0_CLIENT_SECRET=""
+
+# NOTE: TEST_KEY will expire, but this is by design for limited access.
+TEST_KEY=""

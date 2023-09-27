@@ -5,6 +5,16 @@ In order to have a consistent test environment, all testing should be done in do
 Please see [dev/docker/test](dev/docker/test) for a [docker-compose.yml](dev/docker/test/docker-compose.yml) to run an automated test using postgresql 15 and python 3.11
 
 ## Usage:
+Copy `sample.env` to `.env` and edit its contents.
+```
+cp sample.env .env
+nano .env
+```
+
+Please note that not all information is provided and must be obtained by an admin in order to test.
+
+This will become an automated process in the future, but for now is the only way.
+
 ```
 docker compose build
 docker compose up
