@@ -17,6 +17,6 @@ PYTHONPATH=. pytest --exitfirst --verbose --failed-first --cov . --cov-report ht
 
 if [ -d "/drone/src/htmlcov" ]; then
     echo "Copying htmlcov to ${RESULT_LOCATION}"
-    mv htmlcov "/results/${RESULT_LOCATION}"
+    mv htmlcov "${RESULT_LOCATION}"
 fi
 sleep 300
