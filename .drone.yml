@@ -36,7 +36,6 @@ steps:
   commands:
   - export RESULT_LOCATION="/results/$(date +%Y-%d-%m_%H-%M-%S)"
   - /drone/src/dev/drone/test.sh
-  - /drone/src/dev/drone/post_test.sh
 
   volumes:
   - name: results
