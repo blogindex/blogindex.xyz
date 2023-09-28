@@ -46,8 +46,16 @@ steps:
       from_secret: AUTH0_CLIENT_ID
     AUTH0_CLIENT_SECRET:
       from_secret: AUTH0_CLIENT_SECRET
-  
   commands:
-  - export RESULT_LOCATION="/result/$(date +%Y-%d-%m_%H-%M-%S)"
+  - export RESULT_LOCATION="/results/$(date +%Y-%d-%m_%H-%M-%S)"
   - /drone/src/dev/drone/test.sh > ${RESULT_LOCATION}.txt
   - /drone/src/dev/drone/post_test.sh
+
+  volumes:
+  - name: results
+    path: /results
+
+volumes:
+  - name: results
+    host:
+      path: /docker/drone/results
