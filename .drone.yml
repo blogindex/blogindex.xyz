@@ -50,8 +50,6 @@ volumes:
 services:
 - name: apidb-drone
   image: postgres
-  detach: true
-  hostname:
   environment:
     POSTGRES_USER: blogindex
     POSTGRES_PASSWORD: blogindex

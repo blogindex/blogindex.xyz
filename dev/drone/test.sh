@@ -10,6 +10,7 @@ until [ "${WAITLOOP}" = "0" ]; do
     sleep 1
     ((loops++))
     if [ $loops -ge 60 ]; then
+        echo "TIMEOUT EXCEEDED.  
         break
     fi
 done
@@ -18,7 +19,7 @@ cd /drone/src
 python -m venv .test | tee -a $RESULT_LOCATION.txt
 source .test/bin/activate | tee -a $RESULT_LOCATION.txt
 pip install -r requirements.txt | tee -a $RESULT_LOCATION.txt
-PYTHONPATH=. pytest --exitfirst -vv --cov . --cov-report html | tee -a $RESULT_LOCATION.txt
+PYTHONPATH=. pytest -vvv --cov . --cov-report html | tee -a $RESULT_LOCATION.txt
 
 if [ -d "/drone/src/htmlcov" ]; then
     echo "Copying htmlcov to ${RESULT_LOCATION}"
