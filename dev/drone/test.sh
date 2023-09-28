@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
 apt-get update && apt-get -y install postgresql-client
+loops=0
+until [ "$(pg_isready -h ${DATABASE_DB_HOST} -d ${DATABASE_DB})" = "0" ] || [ loops = "120"]; do
 
-until [ $(pg_isready -h ${DATABASE_DB_HOST} -d ${DATABASE_DB}) = "0" ] || [ loops = "12"]; do
-    echo "Waiting for database to come up."
-    sleep 10
+    echo "Waiting for database to come up. ~(${loops}/120 seconds)"
+    sleep 1
+    ((loops++))
 done
 
 cd /drone/src
