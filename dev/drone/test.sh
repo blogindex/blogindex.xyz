@@ -3,11 +3,15 @@
 apt-get update && apt-get -y install postgresql-client
 loops=0
 export PG_PASS=${DATABASE_DB_PASS}
-until [ "$(pg_isready -h ${DATABASE_DB_HOST} -U ${DATABASE_DB_USER} -d ${DATABASE_DB})" = "0" ] || [ loops = "120" ]; do
-
-    echo "Waiting for database to come up. ~(${loops}/120 seconds)"
+DB_WAIT=99
+until [ "DB_UP" = "0" ]; do
+    DB_WAIT=$(pg_isready -d ${DATABASE_DB} -h ${DATABASE_DB_HOST} -U ${DATABASE_DB_USER})
+    echo "Waiting for database to come up. ~(${loops}/30 seconds) pg_isready exit_code=${DB_UP}"
     sleep 1
     ((loops++))
+    if [ loops -gt 29 ]; then
+        DB_WAIT=0
+    fi
 done
 
 cd /drone/src
