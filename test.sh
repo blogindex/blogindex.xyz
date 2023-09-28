@@ -1,4 +1,2 @@
 export $(grep -v '^#' .env | xargs)
-export $(grep -v '^#' .testkey | xargs)
-echo "TEST_KEY=${TEST_KEY}"
-pytest
+pytest --exitfirst --verbose --failed-first --cov=. --cov-report html

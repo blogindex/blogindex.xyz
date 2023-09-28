@@ -7,8 +7,10 @@ psycopg2
 pyyaml
 requests
 requests_toolbelt
-pytest
 httpx
 pyjwt[crpyto]
 cryptography
+pytest
+pytest-cov
+pytest-github-actions-annotate-failures
 

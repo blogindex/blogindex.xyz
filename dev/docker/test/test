@@ -11,4 +11,4 @@ pip install -qqq -r requirements.txt
 echo "Install testing requirements"
 pip install -qqq -r test_requirements.txt
 echo "Running Tests"
-pytest
+pytest -v --exitfirst --failed-first
