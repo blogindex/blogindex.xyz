@@ -13,23 +13,17 @@ steps:
   image: postgres
   detach: true
   environment:
-    POSTGRES_USER:
-      from_secret: DATABASSE_DB_USER
-    POSTGRES_PASSWORD:
-      from_secret: DATABASE_DB_PASS
-    POSTGRES_DB:
-      from_secret: DATABASE_DB
+    POSTGRES_USER: blogindex
+    POSTGRES_PASSWORD: blogindex
+    POSTGRES_DB: blogindex
 
 - name: apitest-drone
   image: python:3.11.5-bullseye
   environment:
-    DATABASE_DB:
-      from_secret: DATABASE_DB
+    DATABASE_DB: blogindex
     DATABASE_DB_HOST: apidb-drone
-    DATABASE_DB_USER:
-      from_secret: DATABASE_DB_USER
-    DATABASE_DB_PASS:
-      from_secret: DATABASE_DB_PASS
+    DATABASE_DB_USER: blogindex
+    DATABASE_DB_PASS: blogindex
     BLOGINDEX_DEBUG:
       from_secret: BLOGINDEX_DEBUG
     BLOGINDEX_LOG_LEVEL:
