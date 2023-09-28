@@ -35,7 +35,8 @@ steps:
       from_secret: AUTH0_CLIENT_SECRET
   commands:
   - export RESULT_LOCATION="/results/$(date +%Y-%d-%m_%H-%M-%S)"
-  - /drone/src/dev/drone/test.sh | tee "$(date +%Y-%d-%m_%H-%M-%S).txt"
+  - export RESULT_TXT="/results/$(date +%Y-%d-%m_%H-%M-%S).txt"
+  - /drone/src/dev/drone/test.sh | tee ${RESULT_TXT}
   - /drone/src/dev/drone/post_test.sh
 
   volumes:
