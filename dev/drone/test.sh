@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+apt-get update && apt-get -y install postgresql-client
+
+until [ $(pg_isready -h ${DATABASE_DB_HOST} -d ${DATABASE_DB}) = "0" ] || [ loops = "12"]; do
+    echo "Waiting for database to come up."
+    sleep 10
+done
+
 cd /drone/src
 python -m venv .test
 source .test/bin/activate
@@ -10,4 +17,4 @@ if [ -d "/drone/src/htmlcov" ]; then
     echo "Copying htmlcov to ${RESULT_LOCATION}"
     mv htmlcov "/results/${RESULT_LOCATION}"
 fi
-sleep 300 
+sleep 300
