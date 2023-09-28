@@ -9,4 +9,5 @@ source .test/bin/activate
 echo "Install core requirements"
 pip install -qqq -r requirements.txt
 echo "Running Tests"
-pytest -v --exitfirst --failed-first
+pytest --exitfirst --verbose --failed-first --cov=. --cov-report html
+sleep 300

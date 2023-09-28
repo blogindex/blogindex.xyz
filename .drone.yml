@@ -11,8 +11,42 @@ trigger:
 steps:
 - name: dev-docker-test
   image: docker:dind
+  environment:
+    DATABASE_DB:
+      from_secret: DATABASE_DB
+    DATABASE_DB_HOST:
+      from_secret: DATABASE_DB_HOST
+    DATABASE_DB_USER:
+      from_secret: DATABASE_DB_USER
+    DATABASE_DB_PASS:
+      from_secret: DATABASE_DB_PASS
+    BLOGINDEX_DEBUG:
+      from_secret: BLOGINDEX_DEBUG
+    BLOGINDEX_LOG_LEVEL:
+      from_secret: BLOGINDEX_LOG_LEVEL
+    AUTH0_DOMAIN:
+      from_secret: AUTH0_DOMAIN
+    AUTH0_API_AUDIENCE:
+      from_secret: AUTH0_API_AUDIENCE
+    AUTH0_ISSUER:
+      from_secret: AUTH0_ISSUER
+    AUTH0_ALGORITHMS:
+      from_secret: AUTH0_ALGORITHMS
+    AUTH0_CLIENT_ID:
+      from_secret: AUTH0_CLIENT_ID
+    AUTH0_CLIENT_SECRET:
+      from_secret: AUTH0_CLIENT_SECRET
+    SSH_KEY:
+      from_secret: SSH_KEY
   volumes:
   - name: docker_sock
     path: /var/run/docker.sock
   commands:
-  - sleep 10000
+  - cd /drone/src/dev/docker/test
+  - docker compose build
+  - docker compose up -d
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
