@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 apt-get update && apt-get -y install postgresql-client
-
+ 
 cd /drone/src
 python -m venv .test
 source .test/bin/activate
