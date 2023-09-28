@@ -22,7 +22,7 @@ cd /drone/src | tee -a $RESULT_LOCATION.txt
 python -m venv .test | tee -a $RESULT_LOCATION.txt
 source .test/bin/activate | tee -a $RESULT_LOCATION.txt
 pip install -r requirements.txt | tee -a $RESULT_LOCATION.txt
-PYTHONPATH=. pytest -vvv --cov . --cov-report html | tee -a $RESULT_LOCATION.txt
+PYTHONPATH=. pytest -vvv --cov . --cov-report html --capture=tee-sys | tee -a $RESULT_LOCATION.txt
 
 if [ -d "/drone/src/htmlcov" ]; then
     echo "Copying htmlcov to ${RESULT_LOCATION}" | tee -a $RESULT_LOCATION.txt
