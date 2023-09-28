@@ -15,8 +15,6 @@ services:
     container_name: apitest
     build: .
     image: blogindex/api-test:latest
-    volumes:
-      - /docker/dev/blogindex.xyz/beardedtek:/blogindex.xyz
     depends_on:
      - apidb
     environment:
