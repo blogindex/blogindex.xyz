@@ -10,47 +10,49 @@ trigger:
 
 
 steps:
-- name: apidb-drone
-  image: postgres
-  detach: true
-  environment:
-    POSTGRES_USER: blogindex
-    POSTGRES_PASSWORD: blogindex
-    POSTGRES_DB: blogindex
+  - name: apitest-drone
+    image: python:3.11.5-bullseye
+    environment:
+      DATABASE_DB: blogindex
+      DATABASE_DB_HOST: apidb-drone
+      DATABASE_DB_USER: blogindex
+      DATABASE_DB_PASS: blogindex
+      BLOGINDEX_DEBUG:
+        from_secret: BLOGINDEX_DEBUG
+      BLOGINDEX_LOG_LEVEL:
+        from_secret: BLOGINDEX_LOG_LEVEL
+      AUTH0_DOMAIN:
+        from_secret: AUTH0_DOMAIN
+      AUTH0_API_AUDIENCE:
+        from_secret: AUTH0_API_AUDIENCE
+      AUTH0_ISSUER:
+        from_secret: AUTH0_ISSUER
+      AUTH0_ALGORITHMS:
+        from_secret: AUTH0_ALGORITHMS
+      AUTH0_CLIENT_ID:
+        from_secret: AUTH0_CLIENT_ID
+      AUTH0_CLIENT_SECRET:
+        from_secret: AUTH0_CLIENT_SECRET
+    commands:
+    - export RESULT_LOCATION="/results/$(date +%Y-%d-%m_%H-%M-%S)"
+    - /drone/src/dev/drone/test.sh
+    - /drone/src/dev/drone/post_test.sh
 
-- name: apitest-drone
-  image: python:3.11.5-bullseye
-  environment:
-    DATABASE_DB: blogindex
-    DATABASE_DB_HOST: apidb-drone
-    DATABASE_DB_USER: blogindex
-    DATABASE_DB_PASS: blogindex
-    BLOGINDEX_DEBUG:
-      from_secret: BLOGINDEX_DEBUG
-    BLOGINDEX_LOG_LEVEL:
-      from_secret: BLOGINDEX_LOG_LEVEL
-    AUTH0_DOMAIN:
-      from_secret: AUTH0_DOMAIN
-    AUTH0_API_AUDIENCE:
-      from_secret: AUTH0_API_AUDIENCE
-    AUTH0_ISSUER:
-      from_secret: AUTH0_ISSUER
-    AUTH0_ALGORITHMS:
-      from_secret: AUTH0_ALGORITHMS
-    AUTH0_CLIENT_ID:
-      from_secret: AUTH0_CLIENT_ID
-    AUTH0_CLIENT_SECRET:
-      from_secret: AUTH0_CLIENT_SECRET
-  commands:
-  - export RESULT_LOCATION="/results/$(date +%Y-%d-%m_%H-%M-%S)"
-  - /drone/src/dev/drone/test.sh
-  - /drone/src/dev/drone/post_test.sh
+    volumes:
+    - name: results
+      path: /results
 
   volumes:
-  - name: results
-    path: /results
+    - name: results
+      host:
+        path: /docker/drone/results
 
-volumes:
-  - name: results
-    host:
-      path: /docker/drone/results
+services:
+  - name: apidb-drone
+    image: postgres
+    detach: true
+    hostname:
+    environment:
+      POSTGRES_USER: blogindex
+      POSTGRES_PASSWORD: blogindex
+      POSTGRES_DB: blogindex
