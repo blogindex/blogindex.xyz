@@ -13,4 +13,5 @@ cryptography
 pytest
 pytest-cov
 pytest-github-actions-annotate-failures
+randominfo
 

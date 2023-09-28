@@ -8,7 +8,5 @@ echo "Activating .test virtual environment"
 source .test/bin/activate
 echo "Install core requirements"
 pip install -qqq -r requirements.txt
-echo "Install testing requirements"
-pip install -qqq -r test_requirements.txt
 echo "Running Tests"
 pytest -v --exitfirst --failed-first
