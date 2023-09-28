@@ -9,7 +9,7 @@ until [ "${WAITLOOP}" = "0" ]; do
     echo "Waiting for database to come up. ~(${loops}/60 seconds)"
     sleep 1
     ((loops++))
-    if [ loops -ge 60 ]; then
+    if [ $loops -ge 60 ]; then
         break
     fi
 done
@@ -18,7 +18,7 @@ cd /drone/src
 python -m venv .test
 source .test/bin/activate
 pip install -r requirements.txt
-PYTHONPATH=. pytest --exitfirst --verbose --failed-first --cov . --cov-report html
+PYTHONPATH=. pytest --exitfirst --verbose --failed-first --cov . --cov-report html | tee "$RESULTS_LOCATION"
 
 if [ -d "/drone/src/htmlcov" ]; then
     echo "Copying htmlcov to ${RESULT_LOCATION}"
