@@ -20,7 +20,7 @@ steps:
     POSTGRES_DB:
       from_secret: DATABASE_DB
 
--name: apitest-drone
+- name: apitest-drone
   image: python:3.11.5-bullseye
   environment:
     DATABASE_DB:
