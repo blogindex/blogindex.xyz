@@ -9,13 +9,23 @@ trigger:
     - push
 
 steps:
-- name: dev-docker-test
-  image: docker:dind
+- name: apidb-drone
+  image: postgres
+  detach: true
+  environment:
+    POSTGRES_USER:
+      from_secret: DATABASSE_DB_USER
+    POSTGRES_PASSWORD:
+      from_secret: DATABASE_DB_PASS
+    POSTGRES_DB:
+      from_secret: DATABASE_DB
+
+-name: apitest-drone
+  image: python:3.11.5-bullseye
   environment:
     DATABASE_DB:
       from_secret: DATABASE_DB
-    DATABASE_DB_HOST:
-      from_secret: DATABASE_DB_HOST
+    DATABASE_DB_HOST: apidb-drone
     DATABASE_DB_USER:
       from_secret: DATABASE_DB_USER
     DATABASE_DB_PASS:
@@ -36,17 +46,9 @@ steps:
       from_secret: AUTH0_CLIENT_ID
     AUTH0_CLIENT_SECRET:
       from_secret: AUTH0_CLIENT_SECRET
-    SSH_KEY:
-      from_secret: SSH_KEY
-  volumes:
-  - name: docker_sock
-    path: /var/run/docker.sock
+  
   commands:
-  - cd /drone/src/dev/docker/test
-  - docker compose build
-  - docker compose up -d
-
-volumes:
-  - name: docker_sock
-    host:
-      path: /var/run/docker.sock
+  - export RESULT_LOCATION="/result/$(date +%Y-%d-%m_%H-%M-%S)"
+  - Running Tests
+  - /drone/src/dev/drone/test.sh > ${RESULT_LOCATION}.txt
+  - /drone/src/dev/drone/post_test.sh
