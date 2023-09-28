@@ -49,6 +49,5 @@ steps:
   
   commands:
   - export RESULT_LOCATION="/result/$(date +%Y-%d-%m_%H-%M-%S)"
-  - Running Tests
   - /drone/src/dev/drone/test.sh > ${RESULT_LOCATION}.txt
   - /drone/src/dev/drone/post_test.sh
