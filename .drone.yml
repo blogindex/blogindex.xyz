@@ -34,4 +34,4 @@ steps:
       AUTH0_CLIENT_SECRET:
         from_secret: AUTH0_CLIENT_SECRET
     commands:
-      - "/ci/blogindex/drone/run_test.sh | tee /ci/results/lastrun-log.txt""
+      - "/ci/blogindex/drone/run_test.sh | tee /ci/results/lastrun-log.txt"
