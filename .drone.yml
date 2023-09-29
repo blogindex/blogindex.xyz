@@ -46,7 +46,7 @@ steps:
   - docker compose down --remove-orphans
   - docker compose build
   - docker compose up -d
-  - docker compose logs -f > /results-stdout.txt 2> /results-stderr.txt
+  - docker compose logs -f > /results/stdout.txt 2> /results/stderr.txt
   - sleep 300
 
   - docker compose down
