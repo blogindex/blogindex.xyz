@@ -38,6 +38,8 @@ steps:
   volumes:
   - name: docker_socket
     path: /var/run/docker.sock
+  - name: results
+    path: /docker/drone/results
   commands:
   - export RESULTS=$(date +%Y-%d-%m_%H-%M-%S)
   - cd /drone/src/dev/docker/test
@@ -51,3 +53,6 @@ volumes:
   - name: docker_socket
     host:
       path: /var/run/docker.sock
+  - name: results
+    host:
+      path: /docker/drone/results
