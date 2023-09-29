@@ -12,7 +12,7 @@ pip install -qqq -r requirements.txt
 echo "Running Tests"
 
 if [ "${RUN_ON_CI}" = "drone" ]; then
-    PYTHONPATH=. pytest --exitfirst -v --failed-first --cov . --cov-report html --capture=tee-sys
+    PYTHONPATH=. pytest --exitfirst -v --failed-first --cov . --cov-report html --capture=tee-sys && touch /results/finished
     
     if [ -d "/drone/src/htmlcov" ]; then
         echo "Copying htmlcov to /results/latest
@@ -24,6 +24,5 @@ if [ "${RUN_ON_CI}" = "drone" ]; then
         echo "An unknown error has occurred. Coverage Test Results are not available for this test."
     fi
 else
-    pytest --exitfirst --verbose --failed-first --cov=. --cov-report html
+    pytest --exitfirst --verbose --failed-first --cov=. --cov-report html && touch /results/finished
 fi
-touch /results/finished
