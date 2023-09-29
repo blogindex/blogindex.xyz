@@ -48,7 +48,6 @@ steps:
   - docker compose up -d
   - docker compose logs -f > /results/stdout.txt 2> /results/stderr.txt &
   - tail -f /results/std* &
-  - /loop
 
   - docker compose down
 volumes:

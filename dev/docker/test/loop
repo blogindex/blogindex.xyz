@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+rm -rf /results/finished
 until [ -f /results/finished ]; do
     sleep 1
 done

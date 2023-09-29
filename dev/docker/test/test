@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-rm -f /results/finished
+/loop &
 cd /blogindex.xyz/
 echo "Cleaning .test virtual environment"
 rm -rf /blogindex.xyz/.test
