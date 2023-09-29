@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 rm -rf /results/finished
-until [ -f /results/finished ]; do
+FINISHED=99
+until [ "${FINISHED}" = "0" ]; do
+    if [ -f "/results/finished" ]
+        FINISHED=0
+    fi
     sleep 10
     echo "$(date -I)  ::: loop hasn't seen /results/finished yet."
 done
