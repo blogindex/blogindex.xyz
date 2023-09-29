@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-/loop > /results/loop &
 cd /blogindex.xyz/
 echo "Cleaning .test virtual environment"
 rm -rf /blogindex.xyz/.test
@@ -26,5 +25,3 @@ if [ "${RUN_ON_CI}" = "drone" ]; then
 else
     pytest --exitfirst --verbose --failed-first --cov=. --cov-report html && touch /results/finished
 fi
-
-sleep 600

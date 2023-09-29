@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 rm -rf /results/finished
 FINISHED=99
-until [ "${FINISHED}" = "0" ]; do
+while [ "${FINISHED}" = "99" ]; do
     if [ -f "/results/finished" ]
         FINISHED=0
     fi
