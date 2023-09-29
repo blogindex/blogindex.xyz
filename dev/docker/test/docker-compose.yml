@@ -20,6 +20,7 @@ services:
     depends_on:
      - apidb
     environment:
+      - RUN_ON_CI=${RUN_ON_CI}
       - DATABASE_DB=${DATABASE_DB:-blogindex}
       - DATABASE_DB_HOST=${DATABASE_DB_HOST:-db}
       - DATABASE_DB_USER=${DATABASE_DB_USER:-blogindex}
