@@ -1,58 +1,20 @@
----
 kind: pipeline
-type: docker
-name: test
-trigger:
-  branch:
-    - drone-test
-  event:
-    - push
+type: ssh
+name: apitest_ssh
 
+server:
+  host: 192.168.10.2
+  user: beardedtek
+  ssh_key:
+    from_secret: ssh_key
 
 steps:
-- name: apidb-docker
-  image: docker:dind
-  environment:
-    RUN_ON_CI: drone
-    DATABASE_DB: blogindex
-    DATABASE_DB_HOST:
-      from_secret: DATABASE_DB_HOST
-    DATABASE_DB_USER: blogindex
-    DATABASE_DB_PASS: blogindex
-    BLOGINDEX_DEBUG:
-      from_secret: BLOGINDEX_DEBUG
-    BLOGINDEX_LOG_LEVEL:
-      from_secret: BLOGINDEX_LOG_LEVEL
-    AUTH0_DOMAIN:
-      from_secret: AUTH0_DOMAIN
-    AUTH0_API_AUDIENCE:
-      from_secret: AUTH0_API_AUDIENCE
-    AUTH0_ISSUER:
-      from_secret: AUTH0_ISSUER
-    AUTH0_ALGORITHMS:
-      from_secret: AUTH0_ALGORITHMS
-    AUTH0_CLIENT_ID:
-      from_secret: AUTH0_CLIENT_ID
-    AUTH0_CLIENT_SECRET:
-      from_secret: AUTH0_CLIENT_SECRET
-  volumes:
-  - name: docker_socket
-    path: /var/run/docker.sock
-  - name: results
-    path: /results
-  commands:
-  - export RESULTS=$(date +%Y-%d-%m_%H-%M-%S)
-  - cd /drone/src/dev/docker/test
-  - docker compose down --remove-orphans
-  - docker compose build
-  - docker compose up -d
-  - docker compose logs -f > /results/stdout.txt 2> /results/stderr.txt
-
-  - docker compose down
-volumes:
-  - name: docker_socket
-    host:
-      path: /var/run/docker.sock
-  - name: results
-    host:
-      path: /docker/drone/results
+  - name: pytest
+    commands:
+      - mkdir -p /drone/pytest
+      - cd /drone/pytest
+      - git clone https://github.com/blogindex/blogindex.xyz.git blogindex
+      - cd blogindex/dev/docker/test
+      - docker compose down
+      - docker compose up -d
+      - docker compose logs -f > /results/$(date +%Y-%m-%d_%H-%M-%S)-stdout.txt
