@@ -44,6 +44,7 @@ steps:
   - cd /drone/src/dev/docker/test
   - docker compose build
   - docker compose up -d
+  - docker compose logs -f
 volumes:
   - name: docker_socket
     host:
