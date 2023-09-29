@@ -1,10 +1,16 @@
 ---
 version: '3'
+networks:
+  drone:
+    external: true
+
 services:
 
   apidb:
     container_name: apitest_db
     image: postgres
+    networks:
+      - drone
     restart: always
     environment:
       - POSTGRES_USER=blogindex
@@ -15,6 +21,8 @@ services:
     container_name: apitest
     build: .
     image: blogindex/api-test:latest
+    networks:
+      -drone
     command:
       - /loop
     volumes:
