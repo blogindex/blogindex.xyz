@@ -4,5 +4,5 @@ until [ -f /results/finished ]; do
     sleep 10
     echo "$(date -I)  ::: loop hasn't seen /results/finished yet."
 done
-sleep 60
+sleep 60 
 pkill -f test
