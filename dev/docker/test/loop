@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 rm -rf /results/finished
 until [ -f /results/finished ]; do
-    sleep 1
+    sleep 10
+    echo "$(date -I)  ::: loop hasn't seen /results/finished yet."
 done
 pkill -f test
