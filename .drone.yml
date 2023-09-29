@@ -47,7 +47,7 @@ steps:
   - docker compose build
   - docker compose up -d
   - docker compose logs -f > /results/stdout.txt 2> /results/stderr.txt &
-  - tail -f /results/std*
+  - tail -f /results/std* &
   - until [ -f /results/finished ];do;sleep 1;docker compose down;done
 
   - docker compose down
