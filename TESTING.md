@@ -6,5 +6,5 @@ Instructions to deploy in a dev environment are available at [dev/docker/deploy/
 
 ## Automated Testing with PyTest
 
-Instructions to do automated testing with pytest in docker are available at [dev/docker/test/TESTING.md](dev/docker/test/TESTING.md)
+Instructions to do automated testing with pytest in docker are available at [blogindex/ci-tools](https://github.com/blogindex/ci-tools)
 
