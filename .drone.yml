@@ -40,6 +40,6 @@ steps:
       - git clone https://github.com/blogindex/blogindex.xyz.git blogindex
       - cd blogindex
       - python -m venv .test
-      - source .test/bin/activate
+      - source /drone/pytest/venv/bin/activate
       - pip install -r requirements.txt
       - ./test.sh
