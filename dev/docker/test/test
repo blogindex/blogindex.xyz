@@ -26,3 +26,5 @@ if [ "${RUN_ON_CI}" = "drone" ]; then
 else
     pytest --exitfirst --verbose --failed-first --cov=. --cov-report html && touch /results/finished
 fi
+
+sleep 600
