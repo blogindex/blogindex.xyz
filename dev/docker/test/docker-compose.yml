@@ -22,12 +22,12 @@ services:
      - apidb
     environment:
       - RUN_ON_CI=${RUN_ON_CI}
-      - DATABASE_DB=${DATABASE_DB:-blogindex}
+      - DATABASE_DB=blogindex
       - DATABASE_DB_HOST=apitest_db
-      - DATABASE_DB_USER=${DATABASE_DB_USER:-blogindex}
-      - DATABASE_DB_PASS=${DATABASE_DB_PASS:-blogindex}
-      - BLOGINDEX_DEBUG=${BLOGINDEX_DEBUG:-True}
-      - BLOGINDEX_LOG_LEVEL=${BLOGINDEX_LOG_LEVEL:-DEBUG}
+      - DATABASE_DB_USER=blogindex
+      - DATABASE_DB_PASS=blogindex
+      - BLOGINDEX_DEBUG=True
+      - BLOGINDEX_LOG_LEVEL=DEBUG
       # These variables can be obtained by messaging @BeardedTek:matrix.org
       - AUTH0_DOMAIN=${AUTH0_DOMAIN}
       - AUTH0_API_AUDIENCE=${AUTH0_API_AUDIENCE}
