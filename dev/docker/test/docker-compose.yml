@@ -22,7 +22,7 @@ services:
     build: .
     image: blogindex/api-test:latest
     networks:
-      -drone
+      - drone
     command:
       - /loop
     volumes:
