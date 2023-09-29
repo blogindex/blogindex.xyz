@@ -10,6 +10,29 @@ server:
 
 steps:
   - name: pytest
+    environment:
+      RUN_ON_CI: drone
+      DATABASE_DB: blogindex
+      DATABASE_DB_HOST:
+        from_secret: DATABASE_DB_HOST
+      DATABASE_DB_USER: blogindex
+      DATABASE_DB_PASS: blogindex
+      BLOGINDEX_DEBUG:
+        from_secret: BLOGINDEX_DEBUG
+      BLOGINDEX_LOG_LEVEL:
+        from_secret: BLOGINDEX_LOG_LEVEL
+      AUTH0_DOMAIN:
+        from_secret: AUTH0_DOMAIN
+      AUTH0_API_AUDIENCE:
+        from_secret: AUTH0_API_AUDIENCE
+      AUTH0_ISSUER:
+        from_secret: AUTH0_ISSUER
+      AUTH0_ALGORITHMS:
+        from_secret: AUTH0_ALGORITHMS
+      AUTH0_CLIENT_ID:
+        from_secret: AUTH0_CLIENT_ID
+      AUTH0_CLIENT_SECRET:
+        from_secret: AUTH0_CLIENT_SECRET
     commands:
       - mkdir -p /drone/pytest
       - cd /drone/pytest
