@@ -41,10 +41,13 @@ steps:
   - name: results
     path: /results
   commands:
+  - export RESULTS=$(date +%Y-%d-%m_%H-%M-%S)
   - cd /drone/src/dev/docker/test
+  - docker compose down --remove-orphans
   - docker compose build
   - docker compose up -d
-  - docker compose logs -f
+  - docker compose logs -f > "${RESULTS}-stdout.txt" 2> "${RESULTS}-stderr.txt" &
+  - sleep 300
 volumes:
   - name: docker_socket
     host:

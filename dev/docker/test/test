@@ -1,10 +1,4 @@
 #!/usr/bin/env bash
-ci_opts=""
-if [ "${RUN_ON_CI}" = "drone" ]; then
-    RESULT_LOCATION=$(date +%Y-%d-%m_%H-%M-%S)
-    ci_opts=" | tee -a ${RESULT_LOCATION}.txt"
-fi
-
 cd /blogindex.xyz/
 echo "Cleaning .test virtual environment"${ci_opts}
 rm -rf /blogindex.xyz/.test${ci_opts}
@@ -20,11 +14,11 @@ if [ "${RUN_ON_CI}" = "drone" ]; then
     PYTHONPATH=. pytest --exitfirst -v --failed-first --cov . --cov-report html --capture=tee-sys${ci_opts}
     
     if [ -d "/drone/src/htmlcov" ]; then
-        echo "Copying htmlcov to ${RESULT_LOCATION}"${ci_opts}
-        mv htmlcov "${RESULT_LOCATION}"${ci_opts}
+        echo "Copying htmlcov to ${RESULTS}"${ci_opts}
+        mv htmlcov "${RESULTS}"${ci_opts}
     fi
-    if [ -d "${RESULT_LOCATION}" ]; then
-        echo "results are available at https://results.blogindex.dev/${RESULT_LOCATION}"${ci_opts}
+    if [ -d "${RESULTS}" ]; then
+        echo "results are available at https://results.blogindex.dev/${RESULTS}"${ci_opts}
     else
         echo "An unknown error has occurred. Coverage Test Results are not available for this test."${ci_opts}
     fi
