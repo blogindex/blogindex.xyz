@@ -8,7 +8,7 @@ python -m venv .test
 echo "Activating .test virtual environment"
 source .test/bin/activate
 echo "Install core requirements"
-pip install -qqq -r requirements.txt
+pip install -r requirements.txt
 echo "Running Tests"
 
 if [ "${RUN_ON_CI}" = "drone" ]; then
