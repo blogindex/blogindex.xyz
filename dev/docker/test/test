@@ -1,26 +1,26 @@
 #!/usr/bin/env bash
 cd /blogindex.xyz/
-echo "Cleaning .test virtual environment"${ci_opts}
-rm -rf /blogindex.xyz/.test${ci_opts}
-echo "Creating new .test virtual environment"${ci_opts}
-python -m venv .test${ci_opts}
-echo "Activating .test virtual environment"${ci_opts}
-source .test/bin/activate${ci_opts}
-echo "Install core requirements"${ci_opts}
-pip install -qqq -r requirements.txt${ci_opts}
-echo "Running Tests"${ci_opts}
+echo "Cleaning .test virtual environment"
+rm -rf /blogindex.xyz/.test
+echo "Creating new .test virtual environment"
+python -m venv .test
+echo "Activating .test virtual environment"
+source .test/bin/activate
+echo "Install core requirements"
+pip install -qqq -r requirements.txt
+echo "Running Tests"
 
 if [ "${RUN_ON_CI}" = "drone" ]; then
-    PYTHONPATH=. pytest --exitfirst -v --failed-first --cov . --cov-report html --capture=tee-sys${ci_opts}
+    PYTHONPATH=. pytest --exitfirst -v --failed-first --cov . --cov-report html --capture=tee-sys
     
     if [ -d "/drone/src/htmlcov" ]; then
-        echo "Copying htmlcov to ${RESULTS}"${ci_opts}
-        mv htmlcov "${RESULTS}"${ci_opts}
+        echo "Copying htmlcov to /results/latest
+        mv htmlcov /results/latest
     fi
     if [ -d "${RESULTS}" ]; then
-        echo "results are available at https://results.blogindex.dev/${RESULTS}"${ci_opts}
+        echo "results are available at https://results.blogindex.dev/latest
     else
-        echo "An unknown error has occurred. Coverage Test Results are not available for this test."${ci_opts}
+        echo "An unknown error has occurred. Coverage Test Results are not available for this test."
     fi
 else
     pytest --exitfirst --verbose --failed-first --cov=. --cov-report html

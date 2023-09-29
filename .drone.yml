@@ -38,20 +38,16 @@ steps:
   volumes:
   - name: docker_socket
     path: /var/run/docker.sock
-  - name: results
-    path: /results
   commands:
   - export RESULTS=$(date +%Y-%d-%m_%H-%M-%S)
   - cd /drone/src/dev/docker/test
   - docker compose down --remove-orphans
   - docker compose build
   - docker compose up -d
-  - docker compose logs -f > "${RESULTS}-stdout.txt" 2> "${RESULTS}-stderr.txt" &
+  - docker compose logs -f > /results/latest-stdout.txt 2> /results/latest-stderr.txt
   - sleep 300
+  - docker compose down
 volumes:
   - name: docker_socket
     host:
       path: /var/run/docker.sock
-  - name: results
-    host:
-      path: /docker/drone/results

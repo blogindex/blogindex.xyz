@@ -3,7 +3,7 @@ version: '3'
 services:
 
   apidb:
-    container_name: apidb
+    container_name: apitest_db
     image: postgres
     restart: always
     environment:
@@ -15,14 +15,15 @@ services:
     container_name: apitest
     build: .
     image: blogindex/api-test:latest
-#    volumes:   ##OPTIONAL to run local codebase
-#      - /docker/dev/blogindex.xyz/beardedtek:/blogindex.xyz
+    volumes:
+      - /docker/drone/results:/results
+#      - /docker/dev/blogindex.xyz/beardedtek:/blogindex.xyz ##OPTIONAL to run local codebase
     depends_on:
      - apidb
     environment:
       - RUN_ON_CI=${RUN_ON_CI}
       - DATABASE_DB=${DATABASE_DB:-blogindex}
-      - DATABASE_DB_HOST=${DATABASE_DB_HOST:-db}
+      - DATABASE_DB_HOST=apitest_db
       - DATABASE_DB_USER=${DATABASE_DB_USER:-blogindex}
       - DATABASE_DB_PASS=${DATABASE_DB_PASS:-blogindex}
       - BLOGINDEX_DEBUG=${BLOGINDEX_DEBUG:-True}
