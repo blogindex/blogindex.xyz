@@ -6,6 +6,8 @@ RUN apt-get update && apt-get -y install wget git && \
 
 COPY test /test
 
+COPY loop /loop
+
 WORKDIR /blogindex.xyz
 
 ENTRYPOINT /test

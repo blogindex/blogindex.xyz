@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+until [ -f /results/finished ]; do
+    sleep 1
+done
+pkill -f test
