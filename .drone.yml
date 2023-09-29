@@ -56,4 +56,4 @@ volumes:
       path: /var/run/docker.sock
   - name: results
     host:
-      path: /results
+      path: /docker/drone/results
