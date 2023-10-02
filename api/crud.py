@@ -99,7 +99,7 @@ def create_site(
             try:
                 user = db.query(models.User).filter(models.User.id == site.user_id).first()  # noqa: E501
                 user_info = f"{user.display}:{user.email}"
-            except:
+            except:  # noqa: E722
                 user_info = "an unkwnown or deleted user"
             finally:
                 raise HTTPException(
@@ -209,7 +209,7 @@ def get_sites_by_author_email(
     if author_exists(db,email=email):
         author_id = get_author(db,data={"email":email},get="id")
         if author_id:
-            return_value = db.query(models.Site).filter(models.Site.user_id == author_id).all()
+            return_value = db.query(models.Site).filter(models.Site.user_id == author_id).all()  # noqa: E501
             logging.debug(f"return {return_value}")
             return return_value
 
