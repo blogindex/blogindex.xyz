@@ -1,12 +1,12 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import HTTPException
 from fastapi.exceptions import ResponseValidationError
-from pydantic import EmailStr, ValidationError
+from pydantic import EmailStr
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError, ProgrammingError
-import random, string, sys, logging
+from sqlalchemy.exc import ProgrammingError
+import logging
 import sys
 
-from .helpers.records import author_exists, site_exists
+from .helpers.records import author_exists, site_exists, get_author
 from . import models, schemas
 
 def create_author(
@@ -93,10 +93,11 @@ def create_site(
         _type_: _description_
     """
     logging.debug(f"{sys._getframe().f_code.co_name}:\n{locals()}")
+
     if author_exists(db,id=site.user_id):
         if site_exists(db,url=site.url):
             try:
-                user = db.query(models.User).filter(models.User.id == site.user_id).first()
+                user = db.query(models.User).filter(models.User.id == site.user_id).first()  # noqa: E501
                 user_info = f"{user.display}:{user.email}"
             except:
                 user_info = "an unkwnown or deleted user"
@@ -130,7 +131,7 @@ def create_site(
             return site
     else:
         try:
-            user_id = db.query(models.Author).filter(models.Author.id == site.user_id).first()
+            user_id = db.query(models.Author).filter(models.Author.id == site.user_id).first()  # noqa: E501
         except ProgrammingError:
             raise HTTPException(
                 status_code=400,
@@ -145,41 +146,44 @@ def get_all_sites(
         limit: int = 100
     ):
     logging.debug(f"{sys._getframe().f_code.co_name}:\n{locals()}")
+
     if site_exists(db,all_records=True):
         return db.query(models.Site).offset(skip).limit(limit).all()
-    else:
-        raise HTTPException(
-                    status_code=400,
-                    detail=f"No Sites are in the database." 
-                    )
 
-def get_sites_by_site_id(
-        site_id: int,
+    raise HTTPException(
+                status_code=400,
+                detail="No Sites are in the database." 
+                )
+
+def get_site_by_id(
+        id: int,
         db: Session,
         skip: int = 0,
         limit: int = 100
     ):
     
     logging.debug(f"{sys._getframe().f_code.co_name}:\n{locals()}")
-    if site_exists(db,id=site_id):
-        query = db.query(models.Site).filter(models.Site.id == site_id).offset(skip).limit(limit)
-        return query.first()
-    else:
-         raise HTTPException(
-            status_code=400,
-            detail=f"No site with id of {site_id} exists." 
-        )
 
-def get_sites_by_user_id(
+    if site_exists(db,id=id):
+        query = db.query(models.Site).filter(models.Site.id == id).offset(skip).limit(limit)  # noqa: E501
+        return query.first()
+
+    raise HTTPException(
+        status_code=400,
+        detail="no records" 
+    )
+
+def get_sites_by_author_id(
         user_id: int,
         db: Session,
         skip: int = 0,
         limit: int = 100
     ):
     logging.debug(f"{sys._getframe().f_code.co_name}:\n{locals()}")
+
     if author_exists(db,id=user_id):
         if site_exists(db,user_id=user_id):
-            query = db.query(models.Site).filter(models.Site.user_id == user_id).offset(skip).limit(limit)
+            query = db.query(models.Site).filter(models.Site.user_id == user_id).offset(skip).limit(limit)  # noqa: E501
             return_value = query.all()
             logging.debug(f"return {return_value}")
             return return_value
@@ -188,13 +192,13 @@ def get_sites_by_user_id(
                 status_code=400,
                 detail=f"No sites by user with id: {user_id}"
             )
-    else:
-        raise HTTPException(
-            status_code=400,
-            detail=f"No users with id: {id} exist."
-        )
 
-def get_sites_by_user_email(
+    raise HTTPException(
+        status_code=400,
+        detail=f"No users with id: {id} exist."
+    )
+
+def get_sites_by_author_email(
         email: EmailStr,
         db: Session,
         skip: int = 0,
@@ -203,10 +207,14 @@ def get_sites_by_user_email(
     logging.debug(f"{sys._getframe().f_code.co_name}:\n{locals()}")
 
     if author_exists(db,email=email):
-        return db.query(models.Site).filter(models.Site.user_id == user.id).all()
-    else:
-        raise HTTPException(
-            status_code=400,
-            detail=f"No users with email: {email} exist."
-        )
+        author_id = get_author(db,data={"email":email},get="id")
+        if author_id:
+            return_value = db.query(models.Site).filter(models.Site.user_id == author_id).all()
+            logging.debug(f"return {return_value}")
+            return return_value
+
+    raise HTTPException(
+        status_code=400,
+        detail="no records"
+    )
         

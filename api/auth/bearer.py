@@ -1,7 +1,5 @@
-import os
 import jwt
-from configparser import ConfigParser
-from fastapi import Response, status, HTTPException
+from fastapi import HTTPException
 
 def authenticate(token,config):
     if VerifyToken(token,config).verify().get("status"):
@@ -12,7 +10,8 @@ class VerifyToken():
         self.token = token
         self.config = config
 
-        # Gets the JWKS from given url and does processing so you can use any of the keys available
+        # Gets the JWKS from given url
+        # Does processing so you can use any of the keys available
         jwks_url = f'https://{self.config["AUTH0"]["DOMAIN"]}/.well-known/jwks.json'
         self.jwks_client = jwt.PyJWKClient(jwks_url)
 

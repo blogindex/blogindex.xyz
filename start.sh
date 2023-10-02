@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
-export $(grep -v '^#' .env | xargs)
-uvicorn api.main:app --host "0.0.0.0" --log-config ./log.ini
+
+APP_PATH="$(dirname "$(readlink -f "$0")")"
+FILES="${APP_PATH}/.env/*"
+for f in $FILES; do
+    export $(grep -v '^#' ${f} | xargs)
+done
+
+uvicorn api.main:app

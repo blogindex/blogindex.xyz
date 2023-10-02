@@ -1,6 +1,4 @@
 from fastapi.testclient import TestClient
-from os import environ
-import sys
 import json
 import randominfo
 
@@ -8,7 +6,6 @@ from api.main import app
 import api.schemas as schemas
 from api.helpers.checks import schema_check
 from key import credentials
-
 
 good_bearer = {'Authorization': f"Bearer {credentials['KEY']}"}
 bad_bearer = {'Authorization': f"Bearer {credentials['KEY']}-BAD"}
@@ -39,11 +36,11 @@ author_data = {
         "disabled": False,
         "value": [author_lnaddr]
     }
-author_json = json.dumps(author_data)
 
 
 
 bad_author_id = 99999
+bad_site_id = bad_author_id
 
 
 client = TestClient(app)
@@ -76,8 +73,6 @@ def test_author_create():
             "value": [author_lnaddr],
             "user_id": author_id
     }
-    global site_json
-    site_json = json.dumps(site_data)
 
 # /author/get/all
 def test_author_get_all():
@@ -149,7 +144,7 @@ def test_author_get_by_id_bad_id():
     )
     assert response.status_code == 400
     assert response.json() == {
-        "detail": f"no records"
+        "detail": "no records"
     }
 
 def test_author_get_by_id_no_apikey():
@@ -173,6 +168,7 @@ def test_site_create():
         json = site_data
     )
     return_json = json.loads(response.text)
+    
     assert response.status_code == 200
     for key in return_json:
         assert key in return_json
@@ -183,7 +179,9 @@ def test_site_create():
             assert isinstance(site_id,int)
         else:
             assert data == site_data[key]
-            
+
+
+
 # /site/get/all
 def test_site_get_all():
     response = client.get(
@@ -202,6 +200,70 @@ def test_site_get_all_no_apikey():
 def test_site_get_all_bad_apikey():
     response = client.get(
         "/site/get/all",
+        headers = bad_bearer
+    )
+    assert response.status_code == 400
+
+# /site/get/by-author_email
+def test_site_get_by_email():
+    response = client.get(
+        f"/site/get/by-author_email?author_email={author_data['email']}",
+        headers = good_bearer
+    )
+    assert response.status_code == 200
+    assert schema_check(schemas.Site(**response.json()[0]))
+
+def test_site_get_by_email_bad_email():
+    response = client.get(
+        "/site/get/by-author_email?author_email=invalid@bad.net",
+        headers = good_bearer
+    )
+    assert response.status_code == 400
+    assert response.json() == {
+        "detail": "no records"
+    }
+
+def test_site_get_by_email_no_apikey():
+    response = client.get(
+        f"/site/get/by-author_email?author_email={author_data['email']}"
+    )
+    assert response.status_code == 403
+
+def test_site_get_by_email_bad_apikey():
+    response = client.get(
+        f"/site/get/by-author_email?author_email={author_data['email']}",
+        headers = bad_bearer
+    )
+    assert response.status_code == 400
+
+# /site/get/by-id
+def test_site_get_by_id():
+    response = client.get(
+        f"/site/get/by-id?id={site_id}",
+        headers = good_bearer
+    )
+    assert response.status_code == 200
+    assert schema_check(schemas.Site(**response.json()))
+
+def test_site_get_by_id_bad_id():
+    response = client.get(
+        f"/site/get/by-id?id={bad_site_id}",
+        headers = good_bearer
+    )
+    assert response.status_code == 400
+    assert response.json() == {
+        "detail": "no records"
+    }
+
+def test_site_get_by_id_no_apikey():
+    response = client.get(
+        f"/site/get/by-id?id={site_id}",
+    )
+    assert response.status_code == 403
+
+def test_site_get_by_id_bad_apikey():
+    response = client.get(
+        f"/site/get/by-id?id={site_id}",
         headers = bad_bearer
     )
     assert response.status_code == 400

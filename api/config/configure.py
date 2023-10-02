@@ -1,9 +1,8 @@
 import logging
-from pydantic import BaseModel, EmailStr, conint, conlist, Json, constr, HttpUrl, FilePath, ValidationError
+from pydantic import BaseModel, constr, ValidationError
 from os import environ, path
 import yaml
 from pprint import pprint
-import sys
 
 
 
@@ -75,8 +74,6 @@ class Configure():
             dict: configuration dictionary
         """
         # Get config yaml file and place it in a dict
-        yaml_env = f"{prefix}_YAML"
-        yaml_file = environ[yaml_env] if yaml_env in environ else config[prefix]["YAML"]
         if path.isfile(self.config[prefix]["YAML"]):
             with open(self.config[prefix]["YAML"]) as config_file:
                 config_yaml = yaml.safe_load(config_file)

@@ -1,5 +1,4 @@
-from pydantic import ConfigDict, BaseModel, EmailStr, conint, conlist, Json, constr, HttpUrl
-from typing import Optional, Any, Union
+from pydantic import ConfigDict, BaseModel, EmailStr, conint, constr
 
 # model.Author
 class AuthorBase(BaseModel):

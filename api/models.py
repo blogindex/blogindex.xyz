@@ -1,9 +1,5 @@
-from sqlalchemy import Boolean, ForeignKey, Integer, String, Float, Column, Boolean, ARRAY, Unicode, LargeBinary
-from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import relationship, DeclarativeBase
-from pprint import pprint
-
-print(__name__)
+from sqlalchemy import Boolean, Integer, String, Column, ARRAY, Unicode
+from sqlalchemy.orm import DeclarativeBase
 
 class Base(DeclarativeBase):
     pass

@@ -13,7 +13,7 @@ router = APIRouter(
         responses={404: {"description": "Not found"}}
 )
 
-@router.post("/create", response_model = schemas.SiteCreate)
+@router.post("/create", response_model = schemas.Site)
 def create_site(
         site: schemas.SiteCreate,
         db: Session = Depends(get_db),
@@ -35,37 +35,31 @@ async def get_all_sites(
     return sites
 
 @router.get("/get/by-id")
-async def get_sites_by_site_id(
-        site_id: int,
+async def get_site_by_site_id(
+        id: int,
         db: Session = Depends(get_db),
-        skip: int = 0,
-        limit: int = 100,
         token: str = Depends(token_auth_scheme)
         ):
     authenticate(token.credentials,config)
-    sites = crud.get_sites_by_site_id(site_id, db, skip=skip, limit=limit)
+    sites = crud.get_site_by_id(id, db)
     return sites
 
-@router.get("/get/by-user_id")
-async def get_sites_by_user_id(
-        user_id: int,
+@router.get("/get/by-author_id")
+async def get_sites_by_author_id(
+        author_id: int,
         db: Session = Depends(get_db),
-        skip: int = 0,
-        limit: int = 100,
         token: str = Depends(token_auth_scheme)
         ):
     authenticate(token.credentials,config)
-    sites = crud.get_sites_by_user_id(user_id, db, skip=skip, limit=limit)
+    sites = crud.get_sites_by_author_id(author_id, db)
     return sites
 
-@router.get("/get/by-user_email")
-async def get_sites_by_user_email(
-        email: EmailStr,
+@router.get("/get/by-author_email")
+async def get_sites_by_author_email(
+        author_email: EmailStr,
         db: Session = Depends(get_db),
-        skip: int = 0,
-        limit: int = 100,
         token: str = Depends(token_auth_scheme)
         ):
     authenticate(token.credentials,config)
-    sites = crud.get_sites_by_user_email(email, db, skip=skip, limit=limit)
+    sites = crud.get_sites_by_author_email(author_email, db)
     return sites

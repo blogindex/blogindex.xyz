@@ -1,6 +1,5 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from pydantic import EmailStr
 
 from api import crud, schemas
 from api.auth.bearer import authenticate

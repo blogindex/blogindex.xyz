@@ -1,7 +1,6 @@
 from sqlalchemy import create_engine
-from pprint import pprint
 #from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker
 
 
 
@@ -11,7 +10,7 @@ class database():
         print(url)
         try:
             self.engine = create_engine(url)
-            self.SessionLocal = sessionmaker(autocommit=False,autoflush=False,bind=self.engine)
+            self.SessionLocal = sessionmaker(autocommit=False,autoflush=False,bind=self.engine)  # noqa: E501
         except:
             raise
 
