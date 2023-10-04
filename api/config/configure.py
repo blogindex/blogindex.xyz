@@ -18,11 +18,13 @@ class blogindex_schema(BaseModel):
     LOG_LEVEL: constr(pattern="NOTSET|DEBUG|INFO|WARN|ERROR|CRITICAL") = "INFO"
     LOG_FILE: str = "./logs/blogindex.log"
     
-class auth0_schema(BaseModel):
+class auth_schema(BaseModel):
     YAML: str = ""
-    DOMAIN: str = "your.domain.com"
-    API_AUDIENCE: str = "your.audience.com"
+    CONF_URL: str = "https://your.domain.com/.well-known/openid-configuration"
+    JWKS_URL: str = "https://your.domain.com/jwks/"
     ISSUER: str = "https://your.domain.com"
+    CLIENT_ID: str = ""
+    CLIENT_SECRET: str = ""
     ALGORITHMS: str = "RS256"
 
 config = {
@@ -41,13 +43,20 @@ config = {
         "LOG_FILE": "blogindex.log",
         "schema": "blogindex"
     },
-    "AUTH0": {
+    "AUTH": {
         "YAML": "",
-        "DOMAIN": "your.domain.com",
-        "API_AUDIENCE": "your.audience.com",
+        "CONF_URL": "https://your.domain.com/.well-known/openid-configuration",
+        "JWKS_URL": "https://your.domain.com/jwks/",
         "ISSUER": "https://your.domain.com",
+        "CLIENT_ID": "",
+        "CLIENT_SECRET": "",
         "ALGORITHMS": "RS256",
-        "schema": "auth0"
+        "schema": "auth"
+    },
+    "OPENID": {
+        "CLIENT_ID": "",
+        "CLIENT_SECRET": "",
+        "CONF_URL": ""
     }
 }
 
@@ -57,7 +66,7 @@ class Configure():
     def __init__(
             self,prefixes:list=[
                 "BLOGINDEX",
-                "AUTH0",
+                "AUTH",
                 "DATABASE"
             ],
             config:dict=config
@@ -117,7 +126,7 @@ class Configure():
 
 
 if __name__ == "__main__":
-    prefixes = ["BLOGINDEX","AUTH0"]
+    prefixes = ["BLOGINDEX","AUTH0","OPENID"]
     blogindex = Configure(config,prefixes)
     #blogindex.get()
     pprint(blogindex.get())

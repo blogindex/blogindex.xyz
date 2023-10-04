@@ -1,8 +1,17 @@
 import jwt
 from fastapi import HTTPException
+from pprint import pprint
+
+from api.config.dependencies import config
 
 def authenticate(token,config):
-    if VerifyToken(token,config).verify().get("status"):
+    auth = VerifyToken(token,config)
+    my_auth = auth.verify()
+    my_auth_result = my_auth.get("status")
+    if my_auth_result:
+        print(auth)
+        print(my_auth)
+        print(my_auth_result)
         raise HTTPException(status_code=400, detail="Not Authenticated")
 
 class VerifyToken():
@@ -12,7 +21,7 @@ class VerifyToken():
 
         # Gets the JWKS from given url
         # Does processing so you can use any of the keys available
-        jwks_url = f'https://{self.config["AUTH0"]["DOMAIN"]}/.well-known/jwks.json'
+        jwks_url = config['AUTH']['JWKS_URL']
         self.jwks_client = jwt.PyJWKClient(jwks_url)
 
     def verify(self):
@@ -30,9 +39,9 @@ class VerifyToken():
             payload = jwt.decode(
                 self.token,
                 self.signing_key,
-                algorithms = self.config["AUTH0"]["ALGORITHMS"],
-                audience = self.config["AUTH0"]["API_AUDIENCE"],
-                issuer = self.config["AUTH0"]["ISSUER"]
+                algorithms = "RS256",
+                issuer = config['AUTH']['ISSUER'],
+                audience = config['AUTH']['CLIENT_ID']
             )
         except Exception as e:
             return {"status": "error", "msg": str(e)}
