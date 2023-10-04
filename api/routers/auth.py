@@ -49,15 +49,14 @@ async def logout(request: Request):
 async def get_token(request: Request):
     try:
         token = await oauth.openid.authorize_access_token(request)
-    except OAuthError as error:
-        pprint(config)
-        if config["BLOGINDEX"]["LOG_LEVEL"] == "DEBUG" or config["BLOGINDEX"]["DEVEL"]:
-            return {"error": error }
-        return {"error": "Error"}
+    except OAuthError:
+        return RedirectResponse("/auth/")
     
     user = token.get('userinfo')
     access_token = token.get('access_token')
-    response = f"<div><a href='{request.url_for('logout')}'>Logout</a><div>"
+    response  = "<h1>OpenID Connect Test Page</h1>"
+    response += "<p>This page is intended for <b>testing purposes only</b>. This route should be disabled when run in production.</p>"
+    response += f"<div><p><a href='{request.url_for('logout')}'>Logout</a></p>"
     for key in user:
         if key in ["email","name","preferred_username","groups"]:
             if key == "groups":
@@ -69,6 +68,23 @@ async def get_token(request: Request):
                 response += f"<div>{key}: <pre>{user[key]}</pre></div>"
     response += f"<div><pre>issued: {datetime.utcfromtimestamp(user['auth_time'])}</pre></div>"
     response += f"<div><pre>expires: {datetime.utcfromtimestamp(user['exp'])}</pre></div>"
-    response += f"</div><div>Access Token:<br/><textarea style='height:25em;width:80%;margin:auto;'>{access_token}</textarea></div>"
+    response += "</div>"
+    response += "<div style='margin:0.5em;'>"
+    response += "<h3>Access Token:</h3>"
+    response += "<p>This token is the bearer token used for authentication with the api.<br/>"
+    response += "You can use this to authenticate using the 'Authorize' button in the "
+    response += "<a href='/docs' target='_blank'>API's Swagger UI Documentation</a>.</p>"
+    response += "<p style='margin:0.25em;'>"
+    response += "<button onclick='copy_token()'>Copy Access Token</button>"
+    response += "<span style='margin-left:1em;color:red;font-weight:bold;' id='whiteboard'></span></p>"
+    response += f"<textarea id='token'style='height:25em;width:80%;margin:auto;'>{access_token}</textarea></div>"
+    response += "<script>function copy_token(){"
+    response += "let access_token=document.getElementById('token').value;"
+    response += "navigator.clipboard.writeText(access_token);"
+    response += "whiteboard = document.getElementById('whiteboard');"
+    response += "whiteboard.innerHTML='Copied to Clipboard';"
+    response += "setTimeout(()=> {"
+    response += "whiteboard.innerHTML='';},3000);"
+    response += "}</script>"
 
     return HTMLResponse(response)

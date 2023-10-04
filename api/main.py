@@ -6,6 +6,7 @@ from .routers import authors, sites, auth, logs
 
 app = FastAPI(
 )
+root_path = app.root_path
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
