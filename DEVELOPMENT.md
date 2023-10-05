@@ -39,4 +39,4 @@ Automated tests can be run using the docker containers defined in [blogindex/ci-
 
 ## Deploying
 
-See [dev/docker/deploy](dev/docker/deploy) for a docker-compose file to deploy the app for testing
+See [docker/blogindex](docker/blogindex) for a docker-compose file to deploy the api for testing
