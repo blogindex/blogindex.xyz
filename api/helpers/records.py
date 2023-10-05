@@ -70,9 +70,7 @@ def get_author(
         return record
 
     if get == "id":
-        print(f"RECORD=id={record.id}")
         return record.id
     elif get == "email":
-        print(f"RECORD=email={record.id}")
         return record.email
     return None

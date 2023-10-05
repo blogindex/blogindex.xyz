@@ -122,11 +122,3 @@ class Configure():
             self.validate(prefix)
             #self.get_prefix(prefix)
         return self.config
-
-
-
-if __name__ == "__main__":
-    prefixes = ["BLOGINDEX","AUTH0","OPENID"]
-    blogindex = Configure(config,prefixes)
-    #blogindex.get()
-    pprint(blogindex.get())

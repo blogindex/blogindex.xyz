@@ -9,9 +9,6 @@ def authenticate(token,config):
     my_auth = auth.verify()
     my_auth_result = my_auth.get("status")
     if my_auth_result:
-        print(auth)
-        print(my_auth)
-        print(my_auth_result)
         raise HTTPException(status_code=400, detail="Not Authenticated")
 
 class VerifyToken():
