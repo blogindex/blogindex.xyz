@@ -1,0 +1,51 @@
+---
+version: '3'
+
+networks:
+  traefik:
+    external: true
+  blogindex-dev:
+    external: true
+
+services:
+
+  api:
+    container_name: api
+    build: .
+    image: blogindex/api:main
+    volumes:
+      # Set to true in .env/devel to use a local codebase
+      - ${LOCAL_CODEBASE:-./blogindex}:/local
+      # Used by /blogindex/start.sh to import environment variables.
+      - .env:/blogindex/.env:ro
+    depends_on:
+      - apidb
+    environment:
+      - USE_LOCAL_CODEBASE=${USE_LOCAL_CODEBASE:-false}
+    env_file:
+      - .env/devel
+    networks:
+      - traefik
+      - blogindex
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`${API_DOMAIN:-api.mydomain.org}`)"
+      - "traefik.http.routers.api.entryPoints=https"
+      - "traefik.http.routers.api.tls=true"
+      - "traefik.http.routers.api.tls.certresolver=le"
+      - "traefik.http.routers.api.service=api-entrypoint"
+      - "traefik.http.services.api-entrypoint.loadbalancer.server.port=8000"
+  
+  apidb:
+    container_name: apidb
+    hostname: ${DATABASE_DB_HOST:-db}
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=${DATABASE_DB_USER:-blogindex}
+      - POSTGRES_PASSWORD=${DATABASE_DB_PASS:-blogindex}
+      - POSTGRES_DB=${DATABASE_DB:-blogindex}
+    env_file:
+      - .env/database
+    networks:
+      - blogindex

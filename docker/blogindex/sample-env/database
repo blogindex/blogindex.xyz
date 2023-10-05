@@ -1,0 +1,4 @@
+DATABASE_DB="blogindex"
+DATABASE_DB_HOST="apidb"
+DATABASE_DB_USER="blogindex"
+DATABASE_DB_PASS="blogindex"

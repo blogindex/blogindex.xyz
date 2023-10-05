@@ -1,0 +1,3 @@
+USE_LOCAL_CODEBASE=true
+LOCAL_CODEBASE=/path/to/local/codebase
+BLOGINDEX_BRANCH="main"

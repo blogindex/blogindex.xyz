@@ -24,7 +24,7 @@ pip install -r requirements.txt
 
 ## Nix
 
-If you're running nix you can use the development config provided in [dev/nix](dev/nix) to bootstrap everything.
+If you're running nix you can use the development config provided in [nix](nix) to bootstrap everything.
 
 ```sh
 nix develop # Evoke development shell
@@ -32,9 +32,11 @@ nix develop # Evoke development shell
 ```
 
 ## Testing
+### ***FIXME***
+At the moment, tests are broken due to the switch from Auth0 to OpenID Connect / Authentik
 
 Automated tests can be run using the docker containers defined in [blogindex/ci-tools](https://github.com/blogindex/ci-tools)
 
-## Deploying with docker
+## Deploying
 
 See [dev/docker/deploy](dev/docker/deploy) for a docker-compose file to deploy the app for testing

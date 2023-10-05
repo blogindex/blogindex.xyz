@@ -1,0 +1,6 @@
+AUTH_CONF_URL="https://authentik.theblogindex.org/application/o/blogindex-oauth/.well-known/openid-configuration"
+AUTH_JWKS_URL="https://authentik.theblogindex.org/application/o/blogindex-oauth/jwks/"
+AUTH_ISSUER="https://authentik.theblogindex.org/application/o/blogindex-oauth/"
+AUTH_CLIENT_ID="YourClientID"
+AUTH_CLIENT_SECRET="YourClientSecret"
+AUTH_ALGORITHMS="RS256"
