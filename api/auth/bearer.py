@@ -1,6 +1,5 @@
 import jwt
 from fastapi import HTTPException
-from pprint import pprint
 
 from api.config.dependencies import config
 

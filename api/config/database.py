@@ -12,7 +12,3 @@ class database():
             self.SessionLocal = sessionmaker(autocommit=False,autoflush=False,bind=self.engine)  # noqa: E501
         except:
             raise
-
-    def POSTGRES(self):
-        
-        return create_engine(url)

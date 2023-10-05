@@ -1,14 +1,11 @@
 from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 
-from .routers import authors, sites, auth, logs
+from .routers import authors, sites, auth
 
 app = FastAPI(
 )
 root_path = app.root_path
-
-app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.add_middleware(SessionMiddleware, secret_key="!secret")
 
@@ -16,4 +13,3 @@ app.add_middleware(SessionMiddleware, secret_key="!secret")
 app.include_router(authors.router)
 app.include_router(sites.router)
 app.include_router(auth.router)
-app.include_router(logs.router)

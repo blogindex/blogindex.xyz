@@ -2,7 +2,6 @@ import logging
 from pydantic import BaseModel, constr, ValidationError
 from os import environ, path
 import yaml
-from pprint import pprint
 
 
 

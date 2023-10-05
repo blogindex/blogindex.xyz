@@ -1,17 +1,11 @@
-import logging
-
-from os import environ
-from fastapi import APIRouter, Depends, Response
-from fastapi.security import OAuth2PasswordBearer
+from fastapi import APIRouter
 from starlette.responses import HTMLResponse, RedirectResponse
 from starlette.requests import Request
 from starlette.config import Config
 from authlib.integrations.starlette_client import OAuth, OAuthError
 from datetime import datetime
-from pprint import pprint
 
-from api.config.dependencies import config, get_db, token_auth_scheme
-from api.auth.bearer import authenticate
+from api.config.dependencies import config
 
 openid_config = Config('.env/blogindex')
 oauth = OAuth(openid_config)
@@ -55,7 +49,7 @@ async def get_token(request: Request):
     user = token.get('userinfo')
     access_token = token.get('access_token')
     response  = "<h1>OpenID Connect Test Page</h1>"
-    response += "<p>This page is intended for <b>testing purposes only</b>. This route should be disabled when run in production.</p>"
+    response += "<p>This page is intended for <b>testing purposes only</b>. This route should be disabled when run in production.</p>"  # noqa: E501
     response += f"<div><p><a href='{request.url_for('logout')}'>Logout</a></p>"
     for key in user:
         if key in ["email","name","preferred_username","groups"]:
@@ -66,18 +60,18 @@ async def get_token(request: Request):
                 response += "</pre></div>"
             else:
                 response += f"<div>{key}: <pre>{user[key]}</pre></div>"
-    response += f"<div><pre>issued: {datetime.utcfromtimestamp(user['auth_time'])}</pre></div>"
-    response += f"<div><pre>expires: {datetime.utcfromtimestamp(user['exp'])}</pre></div>"
+    response += f"<div><pre>issued: {datetime.utcfromtimestamp(user['auth_time'])}</pre></div>"  # noqa: E501
+    response += f"<div><pre>expires: {datetime.utcfromtimestamp(user['exp'])}</pre></div>"  # noqa: E501
     response += "</div>"
     response += "<div style='margin:0.5em;'>"
     response += "<h3>Access Token:</h3>"
-    response += "<p>This token is the bearer token used for authentication with the api.<br/>"
+    response += "<p>This token is the bearer token used for authentication with the api.<br/>"  # noqa: E501
     response += "You can use this to authenticate using the 'Authorize' button in the "
-    response += "<a href='/docs' target='_blank'>API's Swagger UI Documentation</a>.</p>"
+    response += "<a href='/docs' target='_blank'>API's Swagger UI Documentation</a>.</p>"  # noqa: E501
     response += "<p style='margin:0.25em;'>"
     response += "<button onclick='copy_token()'>Copy Access Token</button>"
-    response += "<span style='margin-left:1em;color:red;font-weight:bold;' id='whiteboard'></span></p>"
-    response += f"<textarea id='token'style='height:25em;width:80%;margin:auto;'>{access_token}</textarea></div>"
+    response += "<span style='margin-left:1em;color:red;font-weight:bold;' id='whiteboard'></span></p>"  # noqa: E501
+    response += f"<textarea id='token'style='height:25em;width:80%;margin:auto;'>{access_token}</textarea></div>"  # noqa: E501
     response += "<script>function copy_token(){"
     response += "let access_token=document.getElementById('token').value;"
     response += "navigator.clipboard.writeText(access_token);"
