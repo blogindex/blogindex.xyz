@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [ "${USE_LOCAL_CODEBASE:-false}" == "true" ]; then
-    echo "Using local codebase located at /local"
+    echo "Creating symlink from /local to /blogindex to use local codebase."
     ln -s /local /blogindex
 else
     git clone -b ${BLOGINDEX_BRANCH:-main} https://github.com/blogindex/blogindex.xyz /blogindex
