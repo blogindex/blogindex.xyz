@@ -4,8 +4,10 @@ from starlette.requests import Request
 from starlette.config import Config
 from authlib.integrations.starlette_client import OAuth, OAuthError
 from datetime import datetime
+import urllib.parse
 
 from api.config.dependencies import config
+from api.helpers.request import pprint_request
 
 openid_config = Config('.env/blogindex')
 oauth = OAuth(openid_config)
@@ -25,32 +27,28 @@ router = APIRouter(
 )
 
 @router.get('/')
-async def token_home(request: Request):
-        login_uri = request.url_for('login')
-        return HTMLResponse(f"<a href='{login_uri}'>Login</a>")
-
-@router.get('/login')
-async def login(request: Request):
-        redirect_uri = request.url_for('get_token')
-        return await oauth.openid.authorize_redirect(request, redirect_uri)
-
-@router.get('/logout')
-async def logout(request: Request):
-        request.session.pop('user', None)
-        return RedirectResponse(request.url_for('token_home'))
-
-@router.get('/token/get')
-async def get_token(request: Request):
-    try:
-        token = await oauth.openid.authorize_access_token(request)
-    except OAuthError:
-        return RedirectResponse("/auth/")
-    
-    user = token.get('userinfo')
-    access_token = token.get('access_token')
+async def auth(request: Request):
+    # Begin building response    
     response  = "<h1>OpenID Connect Test Page</h1>"
     response += "<p>This page is intended for <b>testing purposes only</b>. This route should be disabled when run in production.</p>"  # noqa: E501
-    response += f"<div><p><a href='{request.url_for('logout')}'>Logout</a></p>"
+    try:
+        # Attempt to login to OAuth2
+        token = await oauth.openid.authorize_access_token(request)
+        user = token.get('userinfo')
+        access_token = token.get('access_token')
+    except OAuthError as e:
+        
+        error_msg = e if e else "Undefinded OAuthError"
+        error = {"detail": error_msg}
+        response +=  "<div><p style='margin-left:1em;color:red;font-weight:bold;'>"
+        response += f"<b>ERROR:</b> {error['detail']}"
+        response +=  "</p></div>"
+        response +=  "<div><p>"
+        response += f"<a href='{request.url_for('login')}'><button>Login</button></a>"
+        response +=  "</p></div>"
+        response += await pprint_request(request, html=True)
+        return HTMLResponse(response)
+    response += f"<div><p><a href='{request.url_for('logout')}'><button>Logout</button></a></p>"
     for key in user:
         if key in ["email","name","preferred_username","groups"]:
             if key == "groups":
@@ -80,5 +78,15 @@ async def get_token(request: Request):
     response += "setTimeout(()=> {"
     response += "whiteboard.innerHTML='';},3000);"
     response += "}</script>"
-
+    response += await pprint_request(request, html=True)
     return HTMLResponse(response)
+
+@router.get('/login')
+async def login(request: Request):
+        redirect_uri = request.url_for('auth')
+        return await oauth.openid.authorize_redirect(request, redirect_uri)
+
+@router.get('/logout')
+async def logout(request: Request):
+        request.session.pop('user', None)
+        return RedirectResponse(request.url_for('auth'))
